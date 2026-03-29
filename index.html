@@ -258,6 +258,7 @@
         .tag { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 99px; font-size: 0.78em; font-weight: 500; letter-spacing: 0.02em; }
         .tag-stay { background: rgba(79,172,254,0.15); border: 1px solid rgba(79,172,254,0.3); color: var(--aurora-b); }
         .tag-flight { background: rgba(232,93,74,0.15); border: 1px solid rgba(232,93,74,0.35); color: #ff8c7a; }
+        .tag-drive { background: rgba(168,216,234,0.15); border: 1px solid rgba(168,216,234,0.3); color: var(--glacier); }
 
         .day-actions-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 4px; }
         .check-card {
@@ -799,7 +800,7 @@
     const trip = [
         {
             id:1, date:"11/08", lat:60.39, lon:5.32, stay:"ברגן (Bergen)", title:"נחיתה והתאקלמות", flight:"ישראייר 227 | נחיתה 13:00",
-            drive:"הנסיעה משדה התעופה Flesland למרכז ברגן (20 דקות) עוברת דרך רשת מנהרות חדישה. כשיוצאים מהן, נגלים בתי העץ הצבעוניים המפורסמים מטפסים על ההרים הירוקים המקיפים את העיר.",
+            km: 20, drive:"הנסיעה משדה התעופה Flesland למרכז ברגן (20 דקות) עוברת דרך רשת מנהרות חדישה. כשיוצאים מהן, נגלים בתי העץ הצבעוניים המפורסמים מטפסים על ההרים הירוקים המקיפים את העיר.",
             main:"נמל Bryggen ההיסטורי. הליכה בין בתי העץ העתיקים שהם אתר מורשת עולמית.",
             kids:"גלידה ראשונה בנמל וצפייה בספינות המפרש הגדולות.",
             restaurant: { name: "Bryggeloftet & Stuene", desc: "מסעדה היסטורית הממוקמת בנמל בריגן. מגישה מנות נורווגיות מסורתיות.", source: "Fjord Norway" },
@@ -813,7 +814,7 @@
         },
         {
             id:2, date:"12/08", lat:60.39, lon:5.32, stay:"ברגן (Bergen)", title:"ברגן מהגובה",
-            drive:"יום ללא רכב. הליכה רגלית בסמטאות המרוצפות של העיר העתיקה.",
+            km: 0, drive:"יום ללא רכב. הליכה רגלית בסמטאות המרוצפות של העיר העתיקה.",
             main:"עלייה בפוניקולר Fløibanen. הקרון השקוף מטפס בזווית חדה אל פסגת הר Fløyen.",
             kids:"'יער הטרולים' בפסגה – מסלול קסום עם פסלי עץ של טרולים וגן שעשועים ענק.",
             restaurant: { name: "Olivia Zachariasbryggen", desc: "מסעדה איטלקית מומלצת הממוקמת ממש על קו המים.", source: "Google Reviews" },
@@ -827,7 +828,7 @@
         },
         {
             id:3, date:"13/08", lat:60.63, lon:6.42, stay:"Voss (Bavallstunet)", title:"הדרך לווס",
-            drive:"נוסעים על כביש E16 מזרחה. עצרו בנקודת התצפית Trengereid.",
+            km: 100, drive:"נוסעים על כביש E16 מזרחה. עצרו בנקודת התצפית Trengereid.",
             main:"התמקמות בבקתה בווס (Bavallstunet). בירת האקסטרים של נורווגיה.",
             kids:"משחקים במדשאות ליד האגם בווס. מקום מצוין להוציא אנרגיה.",
             restaurant: { name: "Tre Brør", desc: "קפה-בר ומסעדה במרכז ווס. מגיש מנות איכותיות.", source: "TripAdvisor" },
@@ -841,7 +842,7 @@
         },
         {
             id:4, date:"14/08", lat:60.63, lon:6.42, stay:"Voss (Bavallstunet)", title:"רכבל ווס",
-            drive:"נסיעה קצרה מהבקתה למרכז העיירה.",
+            km: 10, drive:"נסיעה קצרה מהבקתה למרכז העיירה.",
             main:"Voss Gondol – הרכבל המודרני ביותר. עלייה מהירה לפסגת הר Hanguren.",
             kids:"מסלול Grebbesløypa המעגלי בפסגה – שביל רחב וקל שמתאים בדיוק לבנות.",
             restaurant: { name: "Hangurstoppen", desc: "מסעדה השוכנת בפסגת הרכבל בווס (820 מטר גובה).", source: "Voss Resort" },
@@ -855,7 +856,7 @@
         },
         {
             id:5, date:"15/08", lat:60.86, lon:7.11, stay:"Voss (Bavallstunet)", title:"יום פלאם (Flåm)",
-            drive:"חציית מנהרת Gudvanga הארוכה (11 ק\"מ).",
+            km: 130, drive:"חציית מנהרת Gudvanga הארוכה (11 ק\"מ).",
             main:"רכבת ה-Flåmsbana. נחשבת לאחת מרכבות הנוף היפות בעולם.",
             kids:"חוויה של 'רכבת הקסמים'. העצירה במפל Kjosfossen תלהיב אותן מאוד.",
             restaurant: { name: "Ægir BrewPub", desc: "מסעדה ויקינגית מרשימה ביותר שזכתה בפרסים.", source: "White Guide Nordic" },
@@ -869,7 +870,7 @@
         },
         {
             id:6, date:"16/08", lat:60.76, lon:6.58, stay:"Voss (Bavallstunet)", title:"מפלים ונוף",
-            drive:"נסיעה צפונה על כביש 13.",
+            km: 25, drive:"נסיעה צפונה על כביש 13.",
             main:"מפל Tvindefossen. מפל מדורג בגובה 110 מטר.",
             kids:"מקום אידיאלי לצילומים משפחתיים.",
             restaurant: { name: "Stalheim Hotel Restaurant", desc: "מלון היסטורי המציע ארוחות צהריים מול נוף מדהים.", source: "Historic Hotels of Europe" },
@@ -880,7 +881,7 @@
         },
         {
             id:7, date:"17/08", lat:60.63, lon:6.42, stay:"Voss (Bavallstunet)", title:"פולקלור בווס",
-            drive:"נסיעה כפרית קצרה מעל ווס.",
+            km: 10, drive:"נסיעה כפרית קצרה מעל ווס.",
             main:"Voss Folk Museum. מוזיאון פתוח המציג את החיים בנורווגיה לפני מאות שנים.",
             kids:"לראות את הכבשים הרועות בין הבתים.",
             restaurant: { name: "Smalahovetunet", desc: "חווה פעילה ומסעדה מסורתית שורשית השוכנת במבנה מהמאה ה-18.", source: "Fjord Norway" },
@@ -891,7 +892,7 @@
         },
         {
             id:8, date:"18/08", lat:61.42, lon:6.75, stay:"אולדן (Olden)", title:"צפונה לפיורדים",
-            drive:"יום של מעברים דרמטיים. תעלו על המעבורת מ-Vangsnes.",
+            km: 220, drive:"יום של מעברים דרמטיים. תעלו על המעבורת מ-Vangsnes.",
             main:"מוזיאון הקרחונים ב-Fjærland. מבנה ארכיטקטוני מרשים.",
             kids:"ניסויים עם קרח אמיתי בתוך המוזיאון.",
             restaurant: { name: "Hoven Restaurant (Loen)", desc: "בקרבת אולדן שוכנת מסעדת שף בפסגת הרכבל Loen Skylift.", source: "Loen Skylift Official" },
@@ -905,7 +906,7 @@
         },
         {
             id:9, date:"19/08", lat:61.86, lon:6.89, stay:"אולדן (Olden)", title:"רכבי הטרולים",
-            drive:"נסיעה לצד אגם Oldevatnet. המים בצבע טורקיז חלבי מרהיב.",
+            km: 45, drive:"נסיעה לצד אגם Oldevatnet. המים בצבע טורקיז חלבי מרהיב.",
             main:"קרחון Briksdal. הליכה או נסיעה בטרול-קאר אל אגם הקרחון.",
             kids:"נסיעה ב'Troll Cars'.",
             restaurant: { name: "Briksdal Fjellstove", desc: "פונדק הרים ומסעדה בכניסה למסלול הקרחון.", source: "Briksdal Official" },
@@ -919,7 +920,7 @@
         },
         {
             id:10, date:"20/08", lat:62.15, lon:6.07, stay:"וולדה (Volda)", title:"הגעה לוולדה",
-            drive:"נסיעה דרך Hornindalsvatnet – האגם העמוק באירופה.",
+            km: 90, drive:"נסיעה דרך Hornindalsvatnet – האגם העמוק באירופה.",
             main:"התמקמות בדירה בוולדה. עיירה סטודנטיאלית תוססת.",
             kids:"סיור בנמל וביקור בספרייה המקומית.",
             restaurant: { name: "Tredet", desc: "מסעדה ובית קפה מודרני על קו המים בוולדה.", source: "Local Guides" },
@@ -933,7 +934,7 @@
         },
         {
             id:11, date:"21/08", lat:62.10, lon:7.20, stay:"וולדה (Volda)", title:"גייראנגר פיורד",
-            drive:"נסיעה על 'דרך הנשרים' (Ørnesvingen).",
+            km: 160, drive:"נסיעה על 'דרך הנשרים' (Ørnesvingen).",
             main:"שייט בפיורד גייראנגר.",
             kids:"לראות את המפלים העצומים מהספינה ולחפש דמויות בסלעים.",
             restaurant: { name: "Brasserie Posten", desc: "מסעדת שף משובחת הממוקמת בסניף דואר היסטורי.", source: "White Guide Nordic" },
@@ -947,7 +948,7 @@
         },
         {
             id:12, date:"22/08", lat:62.40, lon:5.62, stay:"וולדה (Volda)", title:"אי הפאפינים",
-            drive:"נסיעה על גשרים גבוהים שמחברים בין האיים לאוקיינוס.",
+            km: 130, drive:"נסיעה על גשרים גבוהים שמחברים בין האיים לאוקיינוס.",
             main:"האי Runde. מושבת הציפורים המפורסמת.",
             kids:"תצפית על הפאפינים (תוכי ים) הצבעוניים.",
             restaurant: { name: "Kami Skotbu", desc: "נחשבת לאחת ממסעדות הסושי ופירות הים הטובות באזור.", source: "White Guide Nordic" },
@@ -958,7 +959,7 @@
         },
         {
             id:13, date:"23/08", lat:62.47, lon:6.15, stay:"וולדה (Volda)", title:"אקווריום אולסונד",
-            drive:"נסיעה לאורך החוף לכיוון אולסונד.",
+            km: 150, drive:"נסיעה לאורך החוף לכיוון אולסונד.",
             main:"Atlanterhavsparken. אקווריום מרשים בצפון אירופה.",
             kids:"מופע האכלה של כלבי ים ופינגווינים.",
             restaurant: { name: "XL Diner", desc: "מוסד קולינרי מפורסם באולסונד, מגיש בקלאו מעולה.", source: "Fjord Norway" },
@@ -972,7 +973,7 @@
         },
         {
             id:14, date:"24/08", lat:62.15, lon:6.07, stay:"וולדה (Volda)", title:"וולדה רגוע",
-            drive:"יום רגוע ללא נסיעות ארוכות.",
+            km: 0, drive:"יום רגוע ללא נסיעות ארוכות.",
             main:"זמן איכות משפחתי בוולדה.",
             kids:"גן שעשועים מקומי.",
             restaurant: { name: "Hjørundfjord Brygge", desc: "המסעדה יושבת בדיוק על קו המים של הפיורד ומגישה אוכל מקומי טרי.", source: "Destination Ålesund" },
@@ -983,7 +984,7 @@
         },
         {
             id:15, date:"25/08", lat:60.39, lon:5.32, stay:"ברגן / טיסה", title:"חזרה לברגן", flight:"ישראייר 228 | המראה 18:30",
-            drive:"חציית הסוגנפיורד במעבורת Lavik-Oppedal.",
+            km: 280, drive:"חציית הסוגנפיורד במעבורת Lavik-Oppedal.",
             main:"מוזיאון המדע VilVite בברגן.",
             kids:"סימולטורים, משחקי מים וניסויים פיזיקליים.",
             restaurant: { name: "Marg & Bein", desc: "מסעדת בשרים ופירות ים איכותית במרכז ברגן.", source: "White Guide Nordic" },
@@ -1081,6 +1082,7 @@
                     <h2 class="day-main-title">${d.title}</h2>
                     <div class="tags-row">
                         <span class="tag tag-stay">🏠 ${d.stay}</span>
+                        ${d.km > 0 ? `<span class="tag tag-drive">🚗 כ-${d.km} ק״מ</span>` : `<span class="tag tag-drive">🚶‍♂️ יום ללא נהיגה</span>`}
                         ${d.flight ? `<span class="tag tag-flight">✈️ ${d.flight}</span>` : ''}
                     </div>
                 </div>
@@ -1095,7 +1097,7 @@
 
             <div class="cards-grid fade-up" style="animation-delay: 0.15s;">
                 <div class="info-card card-drive">
-                    <div class="card-header"><div class="card-icon">🚗</div><span class="card-label">יומן דרכים</span></div>
+                    <div class="card-header"><div class="card-icon">🚗</div><span class="card-label">יומן דרכים ${d.km > 0 ? `· כ-${d.km} ק״מ` : ''}</span></div>
                     <div class="card-body">
                         <div class="card-img" data-img="${d.imgD}"><img src="" alt="נוף הדרכים"></div>
                         <div class="card-text">${d.drive}</div>
