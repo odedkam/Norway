@@ -339,9 +339,6 @@
         .cost-total-nok { font-size: 1.3em; font-weight: 900; color: var(--white); line-height: 1.1; text-shadow: var(--text-shadow); }
         .cost-total-ils { font-size: 0.85em; font-weight: 500; color: var(--aurora-g); margin-top: 4px; text-shadow: var(--text-shadow); }
 
-        /* ═══════════════════════════════════════
-           OFFICIAL LINKS CARD STYLES
-        ═══════════════════════════════════════ */
         .links-card {
             background: rgba(79,172,254,0.05); border: 1px solid rgba(79,172,254,0.2); border-radius: 16px;
             padding: 18px 20px; transition: transform 0.25s, box-shadow 0.25s; box-shadow: var(--box-shadow);
@@ -819,7 +816,7 @@
                 {icon:"🚗", name:"אגרת כניסה לברגן", amount:"~50 NOK", per:"לכל מעבר"},
                 {icon:"🅿️", name:"חניה במרכז ברגן", amount:"~150 NOK", per:"ליום"},
             ],
-            links:[{title: "מידע רשמי על בריגן (Visit Bergen)", url: "https://en.visitbergen.com/things-to-do/bryggen-in-bergen-p878553"}],
+            links:[{title: "לשכת התיירות - ברגן (Visit Bergen)", url: "https://en.visitbergen.com/"}],
             totalNok: 200
         },
         {
@@ -834,7 +831,7 @@
                 {icon:"🚡", name:"פוניקולר Fløibanen – מבוגר", amount:"220 NOK", per:"מבוגר"},
                 {icon:"🚡", name:"פוניקולר – ילד", amount:"110 NOK", per:"ילד"},
             ],
-            links:[{title: "רכבל Fløibanen (הזמנת כרטיסים)", url: "https://floyen.no/en"}],
+            links:[{title: "רכבל Fløibanen (האתר הרשמי)", url: "https://floyen.no/en"}],
             totalNok: 660
         },
         {
@@ -849,7 +846,7 @@
                 {icon:"🚗", name:"אגרות כביש E16", amount:"~100 NOK", per:"לכיוון"},
                 {icon:"🛒", name:"קניות בסופר לארוחת ערב בבקתה", amount:"~300 NOK", per:"מוערך"},
             ],
-            links:[{title: "לשכת התיירות של ווס (Visit Voss)", url: "https://www.visitvoss.no/en"}],
+            links:[{title: "לשכת התיירות של ווס (Visit Voss)", url: "https://www.visitvoss.no/"}],
             totalNok: 400
         },
         {
@@ -864,7 +861,7 @@
                 {icon:"🚡", name:"Voss Gondol – הלוך ושוב", amount:"360 NOK", per:"מבוגר"},
                 {icon:"🚡", name:"Voss Gondol – ילד", amount:"200 NOK", per:"ילד"},
             ],
-            links:[{title: "רכבל Voss Gondol (הזמנת כרטיסים)", url: "https://www.vossresort.no/en/voss-gondol"}],
+            links:[{title: "אתר הסקי והרכבל Voss Resort", url: "https://www.vossresort.no/en"}],
             totalNok: 920
         },
         {
@@ -879,7 +876,10 @@
                 {icon:"🚂", name:"רכבת Flåmsbana", amount:"850 NOK", per:"מבוגר"},
                 {icon:"🚗", name:"אגרת מנהרת Gudvanga", amount:"~65 NOK", per:"מנהרה"},
             ],
-            links:[{title: "רכבת פלאם - Flåmsbana (הזמנה)", url: "https://www.norwaysbest.com/flamsbana/"}],
+            links:[
+                {title: "רכבת פלאם (Norway's Best)", url: "https://www.norwaysbest.com/"},
+                {title: "הרכבת הלאומית של נורווגיה (Vy)", url: "https://www.vy.no/en"}
+            ],
             totalNok: 2190
         },
         {
@@ -891,7 +891,7 @@
             imgD:"https://picsum.photos/seed/route13-norway/800/400", imgM:"https://picsum.photos/seed/tvindefossen/800/400", imgK:"https://picsum.photos/seed/waterfall-kids/800/400",
             gear:["בגדים להחלפה לבנות", "מחצלת פיקניק"], map:"Tvindefossen",
             costs:[{icon:"⛽", name:"אגרות כביש 13", amount:"~100 NOK", per:"כיוון"}],
-            links:[{title: "מפל Tvindefossen (מידע)", url: "https://www.visitnorway.com/places-to-go/fjord-norway/voss/listings-voss/tvindefossen-waterfall/157434/"}],
+            links:[{title: "אזור הפיורדים (Fjord Norway)", url: "https://www.fjordnorway.com/"}],
             totalNok: 100
         },
         {
@@ -903,7 +903,7 @@
             imgD:"https://picsum.photos/seed/voss-village/800/400", imgM:"https://picsum.photos/seed/voss-folk-museum/800/400", imgK:"https://picsum.photos/seed/norway-sheep/800/400",
             gear:["נעליים נוחות", "כובע שמש"], map:"Voss Folk Museum",
             costs:[{icon:"🏛️", name:"Voss Folk Museum", amount:"~150 NOK", per:"מבוגר"}],
-            links:[{title: "מוזיאון הפולקלור של ווס (אתר רשמי)", url: "https://hardangerogvossmuseum.no/en/voss-folk-museum"}],
+            links:[{title: "מוזיאון הפולקלור בווס", url: "https://hardangerogvossmuseum.no/en"}],
             totalNok: 300
         },
         {
@@ -919,8 +919,8 @@
                 {icon:"🧊", name:"מוזיאון הקרחונים", amount:"~220 NOK", per:"מבוגר"},
             ],
             links:[
-                {title: "מוזיאון הקרחונים Norsk Bremuseum", url: "https://www.bremuseum.no/en/"},
-                {title: "חברת המעבורות Fjord1 (לוחות זמנים)", url: "https://www.fjord1.no/en"}
+                {title: "מוזיאון הקרחונים Norsk Bremuseum", url: "https://www.bremuseum.no/en"},
+                {title: "לוחות זמני מעבורות לאומי (Entur)", url: "https://entur.no/"}
             ],
             totalNok: 860
         },
@@ -936,7 +936,7 @@
                 {icon:"🚙", name:"Troll Car – הלוך ושוב", amount:"300 NOK", per:"מבוגר"},
                 {icon:"🅿️", name:"חניה בבריקסדל", amount:"~50 NOK", per:"ליום"},
             ],
-            links:[{title: "Troll Cars בקרחון בריקסדל (הזמנה)", url: "https://www.oldedalenskyss.no/en/"}],
+            links:[{title: "קרחון בריקסדל (Troll Cars)", url: "https://www.briksdal.no/en"}],
             totalNok: 950
         },
         {
@@ -951,7 +951,7 @@
                 {icon:"⛴️", name:"מעבורת Folkestad", amount:"~250 NOK", per:"הלוך"},
                 {icon:"🚗", name:"אגרות כביש Stryn", amount:"~100 NOK", per:"כיוון"},
             ],
-            links:[{title: "לוחות זמנים מעבורת Volda-Folkestad (Fjord1)", url: "https://www.fjord1.no/en"}],
+            links:[{title: "מתכנן המסלולים הרשמי - Entur", url: "https://entur.no/"}],
             totalNok: 350
         },
         {
@@ -966,7 +966,7 @@
                 {icon:"⛴️", name:"שייט בפיורד", amount:"600 NOK", per:"מבוגר"},
                 {icon:"🅿️", name:"חניה בגייראנגר", amount:"~100 NOK", per:"ליום"},
             ],
-            links:[{title: "שייט בפיורד גייראנגר (Geirangerfjord)", url: "https://www.geirangerfjord.no/english"}],
+            links:[{title: "שייט בפיורד Geirangerfjord", url: "https://www.geirangerfjord.no/"}],
             totalNok: 1575
         },
         {
@@ -981,7 +981,7 @@
                 {icon:"🏛️", name:"Sunnmøre Museum", amount:"180 NOK", per:"מבוגר"},
                 {icon:"🅿️", name:"חניה", amount:"~50 NOK", per:"ליום"}
             ],
-            links:[{title: "מוזיאון Sunnmøre (אתר רשמי)", url: "https://www.vitimusea.no/en/museums/sunnmore-museum"}],
+            links:[{title: "מוזיאון Sunnmøre (רשת Viti)", url: "https://www.vitimusea.no/en"}],
             totalNok: 410
         },
         {
@@ -996,7 +996,7 @@
                 {icon:"🐠", name:"אקווריום אולסונד", amount:"250 NOK", per:"מבוגר"},
                 {icon:"🅿️", name:"חניה", amount:"~100 NOK", per:"ליום"},
             ],
-            links:[{title: "אקווריום Atlanterhavsparken (הזמנה)", url: "https://en.atlanterhavsparken.no/"}],
+            links:[{title: "אקווריום Atlanterhavsparken", url: "https://atlanterhavsparken.no/en"}],
             totalNok: 800
         },
         {
@@ -1008,7 +1008,7 @@
             imgD:"https://picsum.photos/seed/volda-relax/800/400", imgM:"https://picsum.photos/seed/rotevatnet/800/400", imgK:"https://picsum.photos/seed/kids-packing/800/400",
             gear:["רשימת אריזה", "תיק יד למטוס"], map:"Volda, Norway",
             costs:[{icon:"🌊", name:"טיול בטבע סביב וולדה", amount:"חינם", per:""}],
-            links:[{title: "אזור וולדה (מידע לתיירים)", url: "https://en.visitalesund.com/explore/volda"}],
+            links:[{title: "לשכת התיירות של אזור Ålesund", url: "https://www.visitalesund.com/"}],
             totalNok: 0
         },
         {
@@ -1025,8 +1025,8 @@
                 {icon:"🚗", name:"אגרות כביש חזרה", amount:"~150 NOK", per:"כיוון"},
             ],
             links:[
-                {title: "מוזיאון המדע VilVite (אתר רשמי)", url: "https://www.vilvite.no/english/"},
-                {title: "לוחות זמנים מעבורת Lavik-Oppedal (Fjord1)", url: "https://www.fjord1.no/en"}
+                {title: "מוזיאון המדע VilVite", url: "https://www.vilvite.no/en"},
+                {title: "תשלום מעבורות ורכבים (AutoPASS)", url: "https://autopassferje.no/en/"}
             ],
             totalNok: 1450
         }
