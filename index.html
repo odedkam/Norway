@@ -419,7 +419,7 @@
             box-shadow: 0 16px 40px rgba(0,0,0,0.8); border: var(--card-border-glow);
         }
         .image-modal-close {
-            position: absolute; top: -50px; right: 0; background: rgba(168,216,234,0.1); border: 1px solid rgba(168,216,234,0.3); border-radius: 50%;
+            position: fixed; top: 20px; right: 20px; z-index: 801; background: rgba(168,216,234,0.1); border: 1px solid rgba(168,216,234,0.3); border-radius: 50%;
             width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: var(--white);
             font-size: 1.5em; cursor: pointer; transition: background 0.2s, transform 0.2s; box-shadow: var(--box-shadow);
         }
@@ -491,7 +491,7 @@
             .progress-label { display: none; }
             .icon-btn, .day-arrow-btn { min-height: 44px; min-width: 44px; box-shadow: var(--box-shadow); }
             .nav-btn { min-height: 44px; padding: 13px 28px; box-shadow: var(--box-shadow); }
-            .image-modal-close { top: -45px; right: auto; width: 36px; height: 36px; font-size: 1.2em; box-shadow: var(--box-shadow); }
+            .image-modal-close { top: 15px; right: 15px; width: 36px; height: 36px; font-size: 1.2em; box-shadow: var(--box-shadow); }
         }
         @media (max-width: 500px) {
             .brand-title { font-size: 1em; }
@@ -673,7 +673,7 @@
 
         const [day, month] = dateStr.split('/');
         const today      = new Date();
-        const tripDate   = new Date(2026, parseInt(month) - 1, parseInt(day));
+        const tripDate   = new Date(2026, parseInt(month, 10) - 1, parseInt(day, 10));
         const diffDays   = Math.ceil((tripDate - today) / 86400000);
 
         let url, isLive;
@@ -683,7 +683,11 @@
             url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode,windspeed_10m_max&timezone=Europe%2FOslo&start_date=${fmtDate}&end_date=${fmtDate}`;
         } else {
             isLive = false;
-            const archiveDate = `2024-${month}-${day}`;
+            let archiveYear = 2024;
+            if (diffDays < 0 && today.getFullYear() === 2026) {
+                archiveYear = 2026;
+            }
+            const archiveDate = `${archiveYear}-${month}-${day}`;
             url = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${archiveDate}&end_date=${archiveDate}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode,windspeed_10m_max&timezone=Europe%2FOslo`;
         }
 
@@ -973,7 +977,7 @@
             kids:"סימולטורים, משחקי מים וניסויים פיזיקליים (תלוי כמה זמן יישאר לכם).",
             restaurant: { name: "Marg & Bein", desc: "מסעדת בשרים ופירות ים איכותית במרכז ברגן (ליד המוזיאון).", source: "White Guide Nordic" },
             imgD:"https://picsum.photos/seed/sognefjord-ferry/800/400", imgM:"https://picsum.photos/seed/vilvite-bergen/800/400", imgK:"https://picsum.photos/seed/science-kids/800/400",
-            gear:["דרכונים (במקום נגיש)", "בגדי טיסה נוחים"], map:"Bergen Airport",
+            gear:["דרכונים", "בגדי טיסה נוחים"], map:"Bergen Airport",
             costs:[
                 {icon:"⛴️", name:"מעבורת Lavik", amount:"~300 NOK", per:"הלוך"},
                 {icon:"🧪", name:"VilVite מוזיאון מדע", amount:"300 NOK", per:"מבוגר"},
@@ -1260,15 +1264,19 @@
         content.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    let lastPercent = 0;
+    let lastPercent = -1;
     function updateProgress() {
         const done = trip.filter(d => StorageHelper.get(storageKey(d.id))).length;
         const pct  = Math.round((done / trip.length) * 100);
         document.getElementById('progress-bar').style.width = pct + '%';
         document.getElementById('progress-pct').textContent = pct + '%';
 
-        if (pct === 100 && lastPercent < 100) triggerConfetti();
-        lastPercent = pct;
+        if (lastPercent === -1) {
+            lastPercent = pct;
+        } else {
+            if (pct === 100 && lastPercent < 100) triggerConfetti();
+            lastPercent = pct;
+        }
     }
 
     function triggerConfetti() {
