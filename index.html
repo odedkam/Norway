@@ -339,6 +339,27 @@
         .cost-total-nok { font-size: 1.3em; font-weight: 900; color: var(--white); line-height: 1.1; text-shadow: var(--text-shadow); }
         .cost-total-ils { font-size: 0.85em; font-weight: 500; color: var(--aurora-g); margin-top: 4px; text-shadow: var(--text-shadow); }
 
+        /* ═══════════════════════════════════════
+           OFFICIAL LINKS CARD STYLES
+        ═══════════════════════════════════════ */
+        .links-card {
+            background: rgba(79,172,254,0.05); border: 1px solid rgba(79,172,254,0.2); border-radius: 16px;
+            padding: 18px 20px; transition: transform 0.25s, box-shadow 0.25s; box-shadow: var(--box-shadow);
+        }
+        .links-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+        .links-card-header {
+            display: flex; align-items: center; gap: 8px; margin-bottom: 14px; font-size: 0.72em;
+            font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--aurora-b); text-shadow: var(--text-shadow);
+        }
+        .external-link-btn {
+            display: flex; align-items: center; justify-content: space-between; padding: 12px 16px;
+            background: rgba(79,172,254,0.08); border: 1px solid rgba(79,172,254,0.25); border-radius: 12px;
+            color: var(--white); text-decoration: none; font-size: 0.85em; font-weight: 500;
+            transition: background 0.2s, border-color 0.2s, transform 0.1s; box-shadow: var(--box-shadow);
+        }
+        .external-link-btn:hover { background: rgba(79,172,254,0.15); border-color: rgba(79,172,254,0.4); }
+        .external-link-title { display: flex; align-items: center; gap: 10px; }
+
         .map-card {
             background: var(--card-bg); border: var(--card-border-glow); border-radius: 16px; overflow: hidden;
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); margin-bottom: 40px; flex-shrink: 0; display: block; transition: transform 0.25s, box-shadow 0.25s;
@@ -435,17 +456,19 @@
         .complete-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
         @media (hover: none) {
-            .info-card:hover, .restaurant-card:hover, .gear-card:hover, .cost-card:hover, .map-card:hover, .weather-card:hover { transform: none; box-shadow: var(--box-shadow); }
+            .info-card:hover, .restaurant-card:hover, .gear-card:hover, .cost-card:hover, .map-card:hover, .weather-card:hover, .links-card:hover { transform: none; box-shadow: var(--box-shadow); }
             .nav-btn:hover       { transform: none; box-shadow: var(--box-shadow); }
             .day-btn:hover       { background: transparent; }
             .day-btn::after      { display: none; } 
             .icon-btn:hover      { background: rgba(168,216,234,0.08); border-color: var(--border); }
             .modal-gear-item:hover { background: rgba(244,196,48,0.05); transform: none; }
             .modal-print-btn:hover { background: rgba(79,172,254,0.1); transform: none; }
+            .external-link-btn:hover { background: rgba(79,172,254,0.1); border-color: rgba(79,172,254,0.25); transform: none; }
         }
 
-        .info-card:active, .restaurant-card:active, .gear-card:active, .cost-card:active, .map-card:active, .weather-card:active { transform: scale(0.99); transition: transform 0.1s; }
+        .info-card:active, .restaurant-card:active, .gear-card:active, .cost-card:active, .map-card:active, .weather-card:active, .links-card:active { transform: scale(0.99); transition: transform 0.1s; }
         .nav-btn:active          { transform: scale(0.97); }
+        .external-link-btn:active { transform: scale(0.98); }
         .day-arrow-btn:active:not(:disabled) { transform: scale(0.96); background: rgba(168,216,234,0.14); }
 
         @media print {
@@ -455,8 +478,9 @@
             .main-container { display: block !important; }
             .fade-up { opacity: 1 !important; transform: none !important; animation: none !important; }
             .map-container { height: 200px !important; }
-            .info-card, .restaurant-card, .gear-card, .cost-card, .map-card { break-inside: avoid; border: 1px solid #ccc !important; box-shadow: none !important; margin-bottom: 20px; }
+            .info-card, .restaurant-card, .gear-card, .cost-card, .map-card, .links-card { break-inside: avoid; border: 1px solid #ccc !important; box-shadow: none !important; margin-bottom: 20px; }
             .card-img img { opacity: 1 !important; }
+            .external-link-btn { border: 1px solid #ccc !important; color: #000 !important; }
         }
 
         @media (max-width: 1100px) {
@@ -536,7 +560,7 @@
             .weather-loading::before                { animation: none !important; border-top-color: var(--aurora-b); }
             
             .info-card, .restaurant-card,
-            .gear-card, .cost-card,
+            .gear-card, .cost-card, .links-card,
             .map-card, .weather-card,
             .modal-box, .image-modal-content,
             .progress-bar-inner                     { transition: none !important; }
@@ -795,6 +819,7 @@
                 {icon:"🚗", name:"אגרת כניסה לברגן", amount:"~50 NOK", per:"לכל מעבר"},
                 {icon:"🅿️", name:"חניה במרכז ברגן", amount:"~150 NOK", per:"ליום"},
             ],
+            links:[{title: "מידע רשמי על בריגן (Visit Bergen)", url: "https://en.visitbergen.com/things-to-do/bryggen-in-bergen-p878553"}],
             totalNok: 200
         },
         {
@@ -809,6 +834,7 @@
                 {icon:"🚡", name:"פוניקולר Fløibanen – מבוגר", amount:"220 NOK", per:"מבוגר"},
                 {icon:"🚡", name:"פוניקולר – ילד", amount:"110 NOK", per:"ילד"},
             ],
+            links:[{title: "רכבל Fløibanen (הזמנת כרטיסים)", url: "https://floyen.no/en"}],
             totalNok: 660
         },
         {
@@ -823,6 +849,7 @@
                 {icon:"🚗", name:"אגרות כביש E16", amount:"~100 NOK", per:"לכיוון"},
                 {icon:"🛒", name:"קניות בסופר לארוחת ערב בבקתה", amount:"~300 NOK", per:"מוערך"},
             ],
+            links:[{title: "לשכת התיירות של ווס (Visit Voss)", url: "https://www.visitvoss.no/en"}],
             totalNok: 400
         },
         {
@@ -837,6 +864,7 @@
                 {icon:"🚡", name:"Voss Gondol – הלוך ושוב", amount:"360 NOK", per:"מבוגר"},
                 {icon:"🚡", name:"Voss Gondol – ילד", amount:"200 NOK", per:"ילד"},
             ],
+            links:[{title: "רכבל Voss Gondol (הזמנת כרטיסים)", url: "https://www.vossresort.no/en/voss-gondol"}],
             totalNok: 920
         },
         {
@@ -851,6 +879,7 @@
                 {icon:"🚂", name:"רכבת Flåmsbana", amount:"850 NOK", per:"מבוגר"},
                 {icon:"🚗", name:"אגרת מנהרת Gudvanga", amount:"~65 NOK", per:"מנהרה"},
             ],
+            links:[{title: "רכבת פלאם - Flåmsbana (הזמנה)", url: "https://www.norwaysbest.com/flamsbana/"}],
             totalNok: 2190
         },
         {
@@ -862,6 +891,7 @@
             imgD:"https://picsum.photos/seed/route13-norway/800/400", imgM:"https://picsum.photos/seed/tvindefossen/800/400", imgK:"https://picsum.photos/seed/waterfall-kids/800/400",
             gear:["בגדים להחלפה לבנות", "מחצלת פיקניק"], map:"Tvindefossen",
             costs:[{icon:"⛽", name:"אגרות כביש 13", amount:"~100 NOK", per:"כיוון"}],
+            links:[{title: "מפל Tvindefossen (מידע)", url: "https://www.visitnorway.com/places-to-go/fjord-norway/voss/listings-voss/tvindefossen-waterfall/157434/"}],
             totalNok: 100
         },
         {
@@ -873,6 +903,7 @@
             imgD:"https://picsum.photos/seed/voss-village/800/400", imgM:"https://picsum.photos/seed/voss-folk-museum/800/400", imgK:"https://picsum.photos/seed/norway-sheep/800/400",
             gear:["נעליים נוחות", "כובע שמש"], map:"Voss Folk Museum",
             costs:[{icon:"🏛️", name:"Voss Folk Museum", amount:"~150 NOK", per:"מבוגר"}],
+            links:[{title: "מוזיאון הפולקלור של ווס (אתר רשמי)", url: "https://hardangerogvossmuseum.no/en/voss-folk-museum"}],
             totalNok: 300
         },
         {
@@ -886,6 +917,10 @@
             costs:[
                 {icon:"⛴️", name:"מעבורת Vangsnes", amount:"~300 NOK", per:"הלוך"},
                 {icon:"🧊", name:"מוזיאון הקרחונים", amount:"~220 NOK", per:"מבוגר"},
+            ],
+            links:[
+                {title: "מוזיאון הקרחונים Norsk Bremuseum", url: "https://www.bremuseum.no/en/"},
+                {title: "חברת המעבורות Fjord1 (לוחות זמנים)", url: "https://www.fjord1.no/en"}
             ],
             totalNok: 860
         },
@@ -901,6 +936,7 @@
                 {icon:"🚙", name:"Troll Car – הלוך ושוב", amount:"300 NOK", per:"מבוגר"},
                 {icon:"🅿️", name:"חניה בבריקסדל", amount:"~50 NOK", per:"ליום"},
             ],
+            links:[{title: "Troll Cars בקרחון בריקסדל (הזמנה)", url: "https://www.oldedalenskyss.no/en/"}],
             totalNok: 950
         },
         {
@@ -915,6 +951,7 @@
                 {icon:"⛴️", name:"מעבורת Folkestad", amount:"~250 NOK", per:"הלוך"},
                 {icon:"🚗", name:"אגרות כביש Stryn", amount:"~100 NOK", per:"כיוון"},
             ],
+            links:[{title: "לוחות זמנים מעבורת Volda-Folkestad (Fjord1)", url: "https://www.fjord1.no/en"}],
             totalNok: 350
         },
         {
@@ -929,6 +966,7 @@
                 {icon:"⛴️", name:"שייט בפיורד", amount:"600 NOK", per:"מבוגר"},
                 {icon:"🅿️", name:"חניה בגייראנגר", amount:"~100 NOK", per:"ליום"},
             ],
+            links:[{title: "שייט בפיורד גייראנגר (Geirangerfjord)", url: "https://www.geirangerfjord.no/english"}],
             totalNok: 1575
         },
         {
@@ -943,6 +981,7 @@
                 {icon:"🏛️", name:"Sunnmøre Museum", amount:"180 NOK", per:"מבוגר"},
                 {icon:"🅿️", name:"חניה", amount:"~50 NOK", per:"ליום"}
             ],
+            links:[{title: "מוזיאון Sunnmøre (אתר רשמי)", url: "https://www.vitimusea.no/en/museums/sunnmore-museum"}],
             totalNok: 410
         },
         {
@@ -957,6 +996,7 @@
                 {icon:"🐠", name:"אקווריום אולסונד", amount:"250 NOK", per:"מבוגר"},
                 {icon:"🅿️", name:"חניה", amount:"~100 NOK", per:"ליום"},
             ],
+            links:[{title: "אקווריום Atlanterhavsparken (הזמנה)", url: "https://en.atlanterhavsparken.no/"}],
             totalNok: 800
         },
         {
@@ -968,6 +1008,7 @@
             imgD:"https://picsum.photos/seed/volda-relax/800/400", imgM:"https://picsum.photos/seed/rotevatnet/800/400", imgK:"https://picsum.photos/seed/kids-packing/800/400",
             gear:["רשימת אריזה", "תיק יד למטוס"], map:"Volda, Norway",
             costs:[{icon:"🌊", name:"טיול בטבע סביב וולדה", amount:"חינם", per:""}],
+            links:[{title: "אזור וולדה (מידע לתיירים)", url: "https://en.visitalesund.com/explore/volda"}],
             totalNok: 0
         },
         {
@@ -982,6 +1023,10 @@
                 {icon:"⛴️", name:"מעבורת Lavik", amount:"~300 NOK", per:"הלוך"},
                 {icon:"🧪", name:"VilVite מוזיאון מדע", amount:"300 NOK", per:"מבוגר"},
                 {icon:"🚗", name:"אגרות כביש חזרה", amount:"~150 NOK", per:"כיוון"},
+            ],
+            links:[
+                {title: "מוזיאון המדע VilVite (אתר רשמי)", url: "https://www.vilvite.no/english/"},
+                {title: "לוחות זמנים מעבורת Lavik-Oppedal (Fjord1)", url: "https://www.fjord1.no/en"}
             ],
             totalNok: 1450
         }
@@ -1136,6 +1181,21 @@
                 <div class="gear-grid">${gearChips}</div>
             </div>
         `;
+
+        if (d.links && d.links.length > 0) {
+            const linkBtns = d.links.map(l => `
+                <a href="${l.url}" target="_blank" rel="noopener noreferrer" class="external-link-btn">
+                    <span class="external-link-title">🔗 ${l.title}</span>
+                    <span style="color: var(--aurora-b);">↗</span>
+                </a>
+            `).join('');
+            html += `
+                <div class="links-card fade-up" style="animation-delay: 0.22s;">
+                    <div class="links-card-header">הזמנת כרטיסים ומידע רשמי</div>
+                    <div style="display:flex; flex-direction:column; gap:8px;">${linkBtns}</div>
+                </div>
+            `;
+        }
 
         if (d.costs && d.costs.length > 0) {
             const costRows = d.costs.map(c => `
