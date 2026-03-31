@@ -546,6 +546,62 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         .weather-error { padding: 16px 20px; font-size: 0.8em; color: var(--muted); display: flex; align-items: center; gap: 8px; }
 
+        .img-placeholder {
+            position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 8px;
+            background: linear-gradient(135deg, rgba(10,22,40,0.85), rgba(17,34,68,0.9));
+            pointer-events: none;
+        }
+        .img-placeholder-icon { font-size: 2em; opacity: 0.5; }
+        .img-placeholder-text { font-size: 0.78em; color: rgba(168,216,234,0.5); text-align: center; padding: 0 12px; }
+
+        /* ====== COUNTDOWN STRIP ====== */
+        .countdown-strip {
+            display: flex; align-items: center; justify-content: center; gap: 18px;
+            padding: 7px 20px; background: rgba(0,201,167,0.06);
+            border-bottom: 1px solid rgba(0,201,167,0.14); flex-shrink: 0; flex-wrap: wrap;
+        }
+        .countdown-label { font-size: 0.7em; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+        .countdown-blocks { display: flex; gap: 10px; }
+        .cd-block { display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 38px; }
+        .cd-num { font-size: 1.3em; font-weight: 900; color: var(--aurora-g); line-height: 1; font-family: 'Playfair Display', serif; text-shadow: var(--text-shadow); }
+        .cd-unit { font-size: 0.58em; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+        .cd-sep { font-size: 1.2em; font-weight: 900; color: rgba(0,201,167,0.3); align-self: flex-start; margin-top: 2px; }
+        .countdown-strip.trip-started .countdown-label { color: var(--aurora-g); }
+        @media (max-width: 860px) {
+            .countdown-strip { padding: 5px 12px; gap: 10px; }
+            .cd-num { font-size: 1.1em; }
+        }
+
+        /* ====== DAILY NOTES ====== */
+        .notes-card {
+            background: rgba(244,196,48,0.04); border: 1px solid rgba(244,196,48,0.18);
+            border-radius: 16px; overflow: hidden; transition: transform 0.25s, box-shadow 0.25s; box-shadow: var(--box-shadow);
+        }
+        .notes-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+        .notes-card-header {
+            display: flex; align-items: center; justify-content: space-between; padding: 14px 18px;
+            border-bottom: 1px solid rgba(244,196,48,0.12); cursor: pointer; gap: 10px;
+        }
+        .notes-card-title { display: flex; align-items: center; gap: 8px; font-size: 0.72em; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); text-shadow: var(--text-shadow); }
+        .notes-toggle-icon { font-size: 0.85em; color: var(--muted); transition: transform 0.2s; }
+        .notes-card.open .notes-toggle-icon { transform: rotate(180deg); }
+        .notes-body { display: none; padding: 14px 18px 18px; }
+        .notes-card.open .notes-body { display: block; }
+        .notes-textarea {
+            width: 100%; min-height: 90px; background: rgba(255,255,255,0.04); border: 1px solid rgba(244,196,48,0.2);
+            border-radius: 10px; padding: 12px 14px; color: var(--white); font-family: 'Heebo', sans-serif;
+            font-size: 0.88em; line-height: 1.6; resize: vertical; outline: none; direction: rtl;
+            transition: border-color 0.2s; box-shadow: var(--box-shadow);
+        }
+        .notes-textarea::placeholder { color: rgba(168,216,234,0.3); }
+        .notes-textarea:focus { border-color: rgba(244,196,48,0.4); background: rgba(255,255,255,0.06); }
+        .notes-saved-badge {
+            font-size: 0.68em; color: var(--aurora-g); opacity: 0; transition: opacity 0.5s;
+            display: flex; align-items: center; gap: 5px; margin-top: 8px;
+        }
+        .notes-saved-badge.show { opacity: 1; }
+
         @media (prefers-reduced-motion: reduce) {
             .bg-layer-wave                          { animation: none !important; }
             .card-img::before                       { animation: none !important; background: none !important; }
@@ -619,6 +675,17 @@
             </div>
         </div>
     </header>
+
+    <div class="countdown-strip" id="countdown-strip">
+        <span class="countdown-label" id="countdown-label">יוצאים לדרך בעוד</span>
+        <div class="countdown-blocks">
+            <div class="cd-block"><span class="cd-num" id="cd-days">—</span><span class="cd-unit">ימים</span></div>
+            <span class="cd-sep">:</span>
+            <div class="cd-block"><span class="cd-num" id="cd-hours">—</span><span class="cd-unit">שעות</span></div>
+            <span class="cd-sep">:</span>
+            <div class="cd-block"><span class="cd-num" id="cd-mins">—</span><span class="cd-unit">דקות</span></div>
+        </div>
+    </div>
 
     <div class="main-container">
         <nav class="sidebar" id="sidebar" aria-label="ימי הטיול"></nav>
@@ -808,7 +875,9 @@
             main:"נמל Bryggen ההיסטורי. הליכה בין בתי העץ העתיקים שהם אתר מורשת עולמית.",
             kids:"גלידה ראשונה בנמל וצפייה בספינות המפרש הגדולות.",
             restaurant: { name: "Bryggeloftet & Stuene", desc: "מסעדה היסטורית הממוקמת בנמל בריגן. מגישה מנות נורווגיות מסורתיות.", source: "Fjord Norway" },
-            imgD:"https://loremflickr.com/800/400/bergen,road?lock=1", imgM:"https://loremflickr.com/800/400/bergen,bryggen?lock=2", imgK:"https://loremflickr.com/800/400/icecream,kids?lock=3",
+            imgD:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Bergen_City_Centre_from_Floyen.jpg/1280px-Bergen_City_Centre_from_Floyen.jpg",
+            imgM:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Bryggen_in_Bergen%2C_Norway.jpg/1280px-Bryggen_in_Bergen%2C_Norway.jpg",
+            imgK:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Bryggen_Bergen_2016.jpg/1280px-Bryggen_Bergen_2016.jpg",
             gear:["דרכונים", "רישיון נהיגה", "מטריות"], map:"Bergen Airport",
             costs:[
                 {icon:"🚗", name:"אגרת כניסה לברגן", amount:"~50 NOK", per:"לכל מעבר"},
@@ -823,7 +892,9 @@
             main:"עלייה בפוניקולר Fløibanen. הקרון השקוף מטפס בזווית חדה אל פסגת הר Fløyen.",
             kids:"'יער הטרולים' בפסגה – מסלול קסום עם פסלי עץ של טרולים וגן שעשועים ענק.",
             restaurant: { name: "Olivia Zachariasbryggen", desc: "מסעדה איטלקית מומלצת הממוקמת ממש על קו המים.", source: "Google Reviews" },
-            imgD:"https://loremflickr.com/800/400/bergen,alley?lock=4", imgM:"https://loremflickr.com/800/400/floibanen,funicular?lock=5", imgK:"https://loremflickr.com/800/400/troll,wood?lock=6",
+            imgD:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Skuteviken_allmenning_Bergen.jpg/1280px-Skuteviken_allmenning_Bergen.jpg",
+            imgM:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Fl%C3%B8ibanen.jpg/1280px-Fl%C3%B8ibanen.jpg",
+            imgK:"https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/View_from_Mt._Fl%C3%B8yen%2C_Bergen.jpg/1280px-View_from_Mt._Fl%C3%B8yen%2C_Bergen.jpg",
             gear:["נעלי הליכה", "סוודר קל", "מצלמה"], map:"Fløibanen",
             costs:[
                 {icon:"🚡", name:"פוניקולר Fløibanen – מבוגר", amount:"220 NOK", per:"מבוגר"},
@@ -838,7 +909,9 @@
             main:"התמקמות בבקתה בווס. תוכלו לנצל את המטבח בבקתה (ואולי את המנגל) לקפוץ לסופרמרקט המקומי ולקנות בשרים או דגים טריים לארוחת משפחתית.",
             kids:"משחקים במדשאות ליד האגם בווס. מקום מצוין להוציא אנרגיה.",
             restaurant: { name: "Tre Brør", desc: "קפה-בר ומסעדה במרכז ווס. מגיש מנות איכותיות.", source: "TripAdvisor" },
-            imgD:"https://loremflickr.com/800/400/norway,e16?lock=7", imgM:"https://loremflickr.com/800/400/voss,cabin?lock=8", imgK:"https://loremflickr.com/800/400/voss,lake?lock=9",
+            imgD:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Stalheim_Hotel_from_road.jpg/1280px-Stalheim_Hotel_from_road.jpg",
+            imgM:"https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Voss_Norway_June_2009.jpg/1280px-Voss_Norway_June_2009.jpg",
+            imgK:"https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Vangsvatnet_Lake%2C_Voss.jpg/1280px-Vangsvatnet_Lake%2C_Voss.jpg",
             gear:["בגדי ים", "נשנושים לנסיעה", "מוצרי בסיס לבישול (אם חסר בבקתה)"], map:"Voss, Norway",
             costs:[
                 {icon:"🚗", name:"אגרות כביש E16", amount:"~100 NOK", per:"לכיוון"},
@@ -853,7 +926,9 @@
             main:"Voss Gondol – הרכבל המודרני ביותר. עלייה מהירה לפסגת הר Hanguren.",
             kids:"מסלול Grebbesløypa המעגלי בפסגה – שביל רחב וקל שמתאים בדיוק לבנות.",
             restaurant: { name: "Hangurstoppen", desc: "מסעדה השוכנת בפסגת הרכבל בווס (820 מטר גובה).", source: "Voss Resort" },
-            imgD:"https://loremflickr.com/800/400/voss,town?lock=10", imgM:"https://loremflickr.com/800/400/voss,gondola?lock=11", imgK:"https://loremflickr.com/800/400/voss,mountain?lock=12",
+            imgD:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Vossevangen_town_centre.jpg/1280px-Vossevangen_town_centre.jpg",
+            imgM:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Voss_Gondol_in_operation.jpg/1280px-Voss_Gondol_in_operation.jpg",
+            imgK:"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Voss_Hanguren_top_view.jpg/1280px-Voss_Hanguren_top_view.jpg",
             gear:["מעיל רוח", "קרם הגנה", "סוודר לבנות"], map:"Voss Gondol",
             costs:[
                 {icon:"🚡", name:"Voss Gondol – הלוך ושוב", amount:"360 NOK", per:"מבוגר"},
@@ -868,7 +943,9 @@
             main:"רכבת ה-Flåmsbana. נחשבת לאחת מרכבות הנוף היפות בעולם.",
             kids:"חוויה של 'רכבת הקסמים'. העצירה במפל Kjosfossen תלהיב אותן מאוד.",
             restaurant: { name: "Ægir BrewPub", desc: "מסעדה ויקינגית מרשימה ביותר שזכתה בפרסים.", source: "White Guide Nordic" },
-            imgD:"https://loremflickr.com/800/400/gudvangen,tunnel?lock=13", imgM:"https://loremflickr.com/800/400/flamsbana,train?lock=14", imgK:"https://loremflickr.com/800/400/kjosfossen,waterfall?lock=15",
+            imgD:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Gudvangen_Naeroyfjord.jpg/1280px-Gudvangen_Naeroyfjord.jpg",
+            imgM:"https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Fl%C3%A5msbana_ved_Fl%C3%A5m.jpg/1280px-Fl%C3%A5msbana_ved_Fl%C3%A5m.jpg",
+            imgK:"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Kjosfossen_waterfall_flamsbana.jpg/1280px-Kjosfossen_waterfall_flamsbana.jpg",
             gear:["כרטיסי רכבת", "Powerbank", "מעיל חם"], map:"Flåm, Norway",
             costs:[
                 {icon:"🚂", name:"רכבת Flåmsbana", amount:"850 NOK", per:"מבוגר"},
@@ -886,7 +963,9 @@
             main:"מפל Tvindefossen. מפל מדורג בגובה 110 מטר.",
             kids:"מקום אידיאלי לצילומים משפחתיים.",
             restaurant: { name: "Stalheim Hotel Restaurant", desc: "מלון היסטורי המציע ארוחות צהריים מול נוף מדהים.", source: "Historic Hotels of Europe" },
-            imgD:"https://loremflickr.com/800/400/norway,route13?lock=16", imgM:"https://loremflickr.com/800/400/tvindefossen,waterfall?lock=17", imgK:"https://loremflickr.com/800/400/norway,valley?lock=18",
+            imgD:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Stalheimskleiva.jpg/1280px-Stalheimskleiva.jpg",
+            imgM:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Tvindefossen_Norway.jpg/1280px-Tvindefossen_Norway.jpg",
+            imgK:"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Nærøydalen_valley_voss.jpg/1280px-Nærøydalen_valley_voss.jpg",
             gear:["בגדים להחלפה לבנות", "מחצלת פיקניק"], map:"Tvindefossen",
             costs:[{icon:"⛽", name:"אגרות כביש 13", amount:"~100 NOK", per:"כיוון"}],
             links:[{title: "אזור הפיורדים (Fjord Norway)", url: "https://www.fjordnorway.com/"}],
@@ -898,7 +977,9 @@
             main:"Voss Folk Museum. מוזיאון פתוח המציג את החיים בנורווגיה לפני מאות שנים.",
             kids:"לראות את הכבשים הרועות בין הבתים.",
             restaurant: { name: "Smalahovetunet", desc: "חווה פעילה ומסעדה מסורתית שורשית השוכנת במבנה מהמאה ה-18.", source: "Fjord Norway" },
-            imgD:"https://loremflickr.com/800/400/voss,farm?lock=19", imgM:"https://loremflickr.com/800/400/voss,museum?lock=20", imgK:"https://loremflickr.com/800/400/sheep,norway?lock=21",
+            imgD:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Norwegian_farm_Mj%C3%B8lkerodden.jpg/1280px-Norwegian_farm_Mj%C3%B8lkerodden.jpg",
+            imgM:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Voss_folk_museum_mølstertunet.jpg/1280px-Voss_folk_museum_mølstertunet.jpg",
+            imgK:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Sheep_grazing_norway.jpg/1280px-Sheep_grazing_norway.jpg",
             gear:["נעליים נוחות", "כובע שמש"], map:"Voss Folk Museum",
             costs:[{icon:"🏛️", name:"Voss Folk Museum", amount:"~150 NOK", per:"מבוגר"}],
             links:[{title: "מוזיאון הפולקלור בווס", url: "https://hardangerogvossmuseum.no/en"}],
@@ -910,7 +991,9 @@
             main:"מוזיאון הקרחונים ב-Fjærland. מבנה ארכיטקטוני מרשים המסביר על היווצרות הפיורדים.",
             kids:"ניסויים עם קרח אמיתי בתוך המוזיאון.",
             restaurant: { name: "Hoven Restaurant (Loen)", desc: "בקרבת אולדן שוכנת מסעדת שף בפסגת הרכבל Loen Skylift.", source: "Loen Skylift Official" },
-            imgD:"https://loremflickr.com/800/400/fjaerland,fjord?lock=22", imgM:"https://loremflickr.com/800/400/fjaerland,museum?lock=23", imgK:"https://loremflickr.com/800/400/ice,glacier?lock=24",
+            imgD:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Fj%C3%A6rland_Sognefjord_Norway.jpg/1280px-Fj%C3%A6rland_Sognefjord_Norway.jpg",
+            imgM:"https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Norsk_Bremuseum_Fj%C3%A6rland.jpg/1280px-Norsk_Bremuseum_Fj%C3%A6rland.jpg",
+            imgK:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Boyabreen_glacier_fjaerland.jpg/1280px-Boyabreen_glacier_fjaerland.jpg",
             gear:["אוזניות לבנות לנסיעה", "בגדים חמים למוזיאון"], map:"Fjærland Glacier Museum",
             costs:[
                 {icon:"⛴️", name:"מעבורת Vangsnes", amount:"~300 NOK", per:"הלוך"},
@@ -928,7 +1011,9 @@
             main:"קרחון Briksdal. הליכה או נסיעה בטרול-קאר אל אגם הקרחון.",
             kids:"נסיעה ב'Troll Cars' (רכבי באגי פתוחים) – חוויה קופצנית וכיפית לילדות.",
             restaurant: { name: "Briksdal Fjellstove", desc: "פונדק הרים ומסעדה בכניסה למסלול הקרחון.", source: "Briksdal Official" },
-            imgD:"https://loremflickr.com/800/400/oldevatnet,lake?lock=25", imgM:"https://loremflickr.com/800/400/briksdal,glacier?lock=26", imgK:"https://loremflickr.com/800/400/buggy,mountain?lock=27",
+            imgD:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Oldevatnet_turquoise_lake_norway.jpg/1280px-Oldevatnet_turquoise_lake_norway.jpg",
+            imgM:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Briksdalsbreen_glacier_Norway.jpg/1280px-Briksdalsbreen_glacier_Norway.jpg",
+            imgK:"https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Troll_cars_Briksdal.jpg/1280px-Troll_cars_Briksdal.jpg",
             gear:["משקפי שמש", "מעיל חם", "מצלמה"], map:"Briksdalsbreen",
             costs:[
                 {icon:"🚙", name:"Troll Car – הלוך ושוב", amount:"300 NOK", per:"מבוגר"},
@@ -943,7 +1028,9 @@
             main:"התמקמות בדירה בוולדה. עיירה סטודנטיאלית תוססת על שפת פיורד Voldsfjorden.",
             kids:"סיור בנמל וביקור קצר בספרייה המקומית המעוצבת.",
             restaurant: { name: "Tredet", desc: "מסעדה ובית קפה מודרני על קו המים בוולדה.", source: "Local Guides" },
-            imgD:"https://loremflickr.com/800/400/hornindalsvatnet,lake?lock=28", imgM:"https://loremflickr.com/800/400/volda,norway?lock=29", imgK:"https://loremflickr.com/800/400/library,volda?lock=30",
+            imgD:"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Hornindalsvatnet_deepest_lake_europe.jpg/1280px-Hornindalsvatnet_deepest_lake_europe.jpg",
+            imgM:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Volda_Norway_fjord.jpg/1280px-Volda_Norway_fjord.jpg",
+            imgK:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Volda_kulturhus_library.jpg/1280px-Volda_kulturhus_library.jpg",
             gear:["ציוד לבישול ארוחת ערב", "ספר קריאה"], map:"Volda, Norway",
             costs:[
                 {icon:"⛴️", name:"מעבורת Folkestad", amount:"~250 NOK", per:"הלוך"},
@@ -958,7 +1045,9 @@
             main:"שייט בפיורד גייראנגר, מאתרי המורשת העולמית המפורסמים ביותר של נורווגיה.",
             kids:"לראות את מפלי 'שבע האחיות' המפורסמים מהספינה ולנסות לספור אותם.",
             restaurant: { name: "Brasserie Posten", desc: "מסעדת שף משובחת הממוקמת בסניף דואר היסטורי בגייראנגר.", source: "White Guide Nordic" },
-            imgD:"https://loremflickr.com/800/400/ornesvingen,view?lock=31", imgM:"https://loremflickr.com/800/400/geirangerfjord,norway?lock=32", imgK:"https://loremflickr.com/800/400/seven,sisters,waterfall?lock=33",
+            imgD:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/%C3%98rnesvingen_eagles_road_geiranger.jpg/1280px-%C3%98rnesvingen_eagles_road_geiranger.jpg",
+            imgM:"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Geiranger_fjord%2C_Norway.jpg/1280px-Geiranger_fjord%2C_Norway.jpg",
+            imgK:"https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Seven_Sisters_waterfall_Geiranger_Norway.jpg/1280px-Seven_Sisters_waterfall_Geiranger_Norway.jpg",
             gear:["בגדים אטומים למים", "משקפת", "כריכים"], map:"Geirangerfjord",
             costs:[
                 {icon:"⛴️", name:"שייט בפיורד", amount:"600 NOK", per:"מבוגר"},
@@ -973,7 +1062,9 @@
             main:"Sunnmøre Museum - מוזיאון פתוח גדול ויפהפה עם עשרות בתי עץ אותנטיים, סירות עתיקות וספינות ויקינגיות משוחזרות.",
             kids:"לעלות על סיפון של ספינה ויקינגית עתיקה ולחקור את בתי העץ ההיסטוריים.",
             restaurant: { name: "Kami Skotbu", desc: "נחשבת לאחת ממסעדות פירות הים והסושי הטובות באזור, באולסונד.", source: "White Guide Nordic" },
-            imgD:"https://loremflickr.com/800/400/alesund,bridge?lock=34", imgM:"https://loremflickr.com/800/400/sunnmore,museum?lock=35", imgK:"https://loremflickr.com/800/400/viking,ship?lock=36",
+            imgD:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/%C3%85lesund_Norway_bridge_panorama.jpg/1280px-%C3%85lesund_Norway_bridge_panorama.jpg",
+            imgM:"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Sunnm%C3%B8re_Museum_open_air.jpg/1280px-Sunnm%C3%B8re_Museum_open_air.jpg",
+            imgK:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Viking_ship_replica_sunnmore.jpg/1280px-Viking_ship_replica_sunnmore.jpg",
             gear:["נעלי הליכה נוחות", "בקבוקי מים"], map:"Sunnmøre Museum",
             costs:[
                 {icon:"🏛️", name:"Sunnmøre Museum", amount:"180 NOK", per:"מבוגר"},
@@ -988,7 +1079,9 @@
             main:"Atlanterhavsparken. אחד מאקווריומי המים המלוחים המרשימים בצפון אירופה, הבנוי ממש לתוך קו החוף.",
             kids:"מופע האכלה של כלבי ים ופינגווינים.",
             restaurant: { name: "XL Diner", desc: "מוסד קולינרי מפורסם באולסונד המגיש מנות 'קליפפיסק' (בקלאו) מעולות.", source: "Fjord Norway" },
-            imgD:"https://loremflickr.com/800/400/alesund,artnouveau?lock=37", imgM:"https://loremflickr.com/800/400/atlanterhavsparken,aquarium?lock=38", imgK:"https://loremflickr.com/800/400/seal,aquarium?lock=39",
+            imgD:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/%C3%85lesund_sentrum_art_nouveau.jpg/1280px-%C3%85lesund_sentrum_art_nouveau.jpg",
+            imgM:"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Atlanterhavsparken_aquarium_alesund.jpg/1280px-Atlanterhavsparken_aquarium_alesund.jpg",
+            imgK:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Atlantic_seal_aquarium_norway.jpg/1280px-Atlantic_seal_aquarium_norway.jpg",
             gear:["גרביים להחלפה (בגלל מתחמי המים)", "מצלמה"], map:"Atlanterhavsparken",
             costs:[
                 {icon:"🐠", name:"אקווריום אולסונד", amount:"250 NOK", per:"מבוגר"},
@@ -1003,7 +1096,9 @@
             main:"זמן איכות משפחתי בוולדה. הזדמנות לעשות הליכה קצרה בטבע מסביב לאגם Rötevatnet.",
             kids:"זמן פנוי בגן השעשועים המקומי ולארוז לאט לאט את המזוודות.",
             restaurant: { name: "Hjørundfjord Brygge", desc: "מסעדה הנמצאת לא רחוק מוולדה, ממש על קו המים של הפיורד (מומלץ לקפוץ אם מתחשק).", source: "Destination Ålesund" },
-            imgD:"https://loremflickr.com/800/400/volda,lake?lock=40", imgM:"https://loremflickr.com/800/400/volda,nature?lock=41", imgK:"https://loremflickr.com/800/400/packing,luggage?lock=42",
+            imgD:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/R%C3%B8tevatnet_lake_volda_norway.jpg/1280px-R%C3%B8tevatnet_lake_volda_norway.jpg",
+            imgM:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Voldsfjorden_view_volda.jpg/1280px-Voldsfjorden_view_volda.jpg",
+            imgK:"https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Norwegian_nature_hike_family.jpg/1280px-Norwegian_nature_hike_family.jpg",
             gear:["רשימת אריזה", "תיק יד למטוס"], map:"Volda, Norway",
             costs:[{icon:"🌊", name:"טיול בטבע סביב וולדה", amount:"חינם", per:""}],
             links:[{title: "לשכת התיירות של אזור Ålesund", url: "https://www.visitalesund.com/"}],
@@ -1015,7 +1110,9 @@
             main:"מוזיאון המדע VilVite בברגן. אם תספיקו, זה מקום מדהים לילדים לפני הטיסה.",
             kids:"סימולטורים, משחקי מים וניסויים פיזיקליים (תלוי כמה זמן יישאר לכם).",
             restaurant: { name: "Marg & Bein", desc: "מסעדת בשרים ופירות ים איכותית במרכז ברגן (ליד המוזיאון).", source: "White Guide Nordic" },
-            imgD:"https://loremflickr.com/800/400/sognefjord,ferry?lock=43", imgM:"https://loremflickr.com/800/400/vilvite,science?lock=44", imgK:"https://loremflickr.com/800/400/science,kids?lock=45",
+            imgD:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Sognefjord_ferry_lavik_oppedal.jpg/1280px-Sognefjord_ferry_lavik_oppedal.jpg",
+            imgM:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/VilVite_science_museum_bergen.jpg/1280px-VilVite_science_museum_bergen.jpg",
+            imgK:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Children_science_experiments_museum.jpg/1280px-Children_science_experiments_museum.jpg",
             gear:["דרכונים", "בגדי טיסה נוחים"], map:"Bergen Airport",
             costs:[
                 {icon:"⛴️", name:"מעבורת Lavik", amount:"~300 NOK", per:"הלוך"},
@@ -1136,21 +1233,21 @@
                 <div class="info-card card-drive">
                     <div class="card-header"><div class="card-icon">🚗</div><span class="card-label">יומן דרכים ${d.km > 0 ? `· כ-${d.km} ק״מ` : ''}</span></div>
                     <div class="card-body">
-                        <div class="card-img" data-img="${d.imgD}"><img src="" alt="נוף הדרכים"></div>
+                        <div class="card-img" data-img="${d.imgD}" data-alt="🚗 נוף הדרך אל ${d.stay}"><img src="" alt="נוף הדרכים אל ${d.stay}" loading="lazy" decoding="async"></div>
                         <div class="card-text">${d.drive}</div>
                     </div>
                 </div>
                 <div class="info-card card-main">
                     <div class="card-header"><div class="card-icon">🎯</div><span class="card-label">אטרקציה מרכזית</span></div>
                     <div class="card-body">
-                        <div class="card-img" data-img="${d.imgM}"><img src="" alt="אטרקציה"></div>
+                        <div class="card-img" data-img="${d.imgM}" data-alt="🎯 ${d.title}"><img src="" alt="${d.title}" loading="lazy" decoding="async"></div>
                         <div class="card-text">${d.main}</div>
                     </div>
                 </div>
                 <div class="info-card card-kids card-wide">
                     <div class="card-header"><div class="card-icon">✨</div><span class="card-label">דגש לבנות (4 ו-8)</span></div>
                     <div class="card-body">
-                        <div class="card-img" data-img="${d.imgK}"><img src="" alt="פעילות לילדים"></div>
+                        <div class="card-img" data-img="${d.imgK}" data-alt="✨ פעילות לבנות ביום ${d.id}"><img src="" alt="פעילות לבנות ביום ${d.id}" loading="lazy" decoding="async"></div>
                         <div class="card-text">${d.kids}</div>
                     </div>
                 </div>
@@ -1176,6 +1273,20 @@
             <div class="gear-card fade-up" style="animation-delay: 0.2s;">
                 <div class="gear-card-header">🎒 מה להכין בתיק הגב הבוקר?</div>
                 <div class="gear-grid">${gearChips}</div>
+            </div>
+        `;
+
+        const savedNote = StorageHelper.get('norway26-note-' + id) || '';
+        html += `
+            <div class="notes-card fade-up${savedNote ? ' open' : ''}" id="notes-card-${id}" style="animation-delay: 0.22s;">
+                <div class="notes-card-header" id="notes-toggle-${id}">
+                    <span class="notes-card-title">✏️ הערות אישיות ליום זה</span>
+                    <span class="notes-toggle-icon">▾</span>
+                </div>
+                <div class="notes-body">
+                    <textarea class="notes-textarea" id="notes-ta-${id}" placeholder="כתבו כאן מה חשוב לזכור, מה להזמין מראש, טיפ אישי...">${savedNote}</textarea>
+                    <div class="notes-saved-badge" id="notes-badge-${id}">✓ נשמר</div>
+                </div>
             </div>
         `;
 
@@ -1283,15 +1394,27 @@
         content.innerHTML = html;
 
         if (d.lat && d.lon) renderWeatherCard(d.id, d.lat, d.lon, d.date);
+        initNotes(id);
 
         content.querySelectorAll('.card-img[data-img]').forEach(wrapper => {
-            const src = wrapper.getAttribute('data-img');
-            const img = wrapper.querySelector('img');
-            img.src = src;
-            img.onload  = () => wrapper.classList.add('loaded');
-            img.onerror = () => wrapper.classList.add('loaded');
-            
-            wrapper.addEventListener('click', () => openImageModal(src));
+            const src     = wrapper.getAttribute('data-img');
+            const altText = wrapper.getAttribute('data-alt') || '📍';
+            const img     = wrapper.querySelector('img');
+            img.loading   = 'lazy';
+            img.decoding  = 'async';
+            img.src       = src;
+            img.onload    = () => wrapper.classList.add('loaded');
+            img.onerror   = () => {
+                wrapper.classList.add('loaded');
+                img.style.display = 'none';
+                const ph = document.createElement('div');
+                ph.className = 'img-placeholder';
+                ph.innerHTML = `<span class="img-placeholder-icon">🏔️</span><span class="img-placeholder-text">${altText}</span>`;
+                wrapper.appendChild(ph);
+            };
+            wrapper.addEventListener('click', () => {
+                if (img.style.display !== 'none') openImageModal(src);
+            });
         });
 
         const checkCard = content.querySelector('.check-card');
@@ -1502,6 +1625,61 @@
 
     const headerGearBtn = document.getElementById('header-gear-btn');
     if (headerGearBtn) headerGearBtn.addEventListener('click', openGearModal);
+
+    // ====== COUNTDOWN ======
+    (function initCountdown() {
+        const DEPARTURE = new Date('2026-08-11T13:00:00+03:00'); // נחיתה 13:00 שעון ישראל
+        const strip     = document.getElementById('countdown-strip');
+        const labelEl   = document.getElementById('countdown-label');
+        const dEl       = document.getElementById('cd-days');
+        const hEl       = document.getElementById('cd-hours');
+        const mEl       = document.getElementById('cd-mins');
+
+        function tick() {
+            const now  = new Date();
+            const diff = DEPARTURE - now;
+
+            if (diff <= 0) {
+                strip.classList.add('trip-started');
+                labelEl.textContent = '✈️ המסע החל! בהצלחה!';
+                dEl.textContent = hEl.textContent = mEl.textContent = '0';
+                return;
+            }
+
+            const totalMins = Math.floor(diff / 60000);
+            const days  = Math.floor(totalMins / 1440);
+            const hours = Math.floor((totalMins % 1440) / 60);
+            const mins  = totalMins % 60;
+
+            dEl.textContent = days;
+            hEl.textContent = String(hours).padStart(2, '0');
+            mEl.textContent = String(mins).padStart(2, '00');
+        }
+
+        tick();
+        setInterval(tick, 30000); // עדכון כל 30 שניות
+    })();
+
+    // ====== DAILY NOTES ======
+    function initNotes(dayId) {
+        const card    = document.getElementById('notes-card-'  + dayId);
+        const toggle  = document.getElementById('notes-toggle-' + dayId);
+        const ta      = document.getElementById('notes-ta-'    + dayId);
+        const badge   = document.getElementById('notes-badge-' + dayId);
+        if (!card || !toggle || !ta) return;
+
+        toggle.addEventListener('click', () => card.classList.toggle('open'));
+
+        let saveTimer;
+        ta.addEventListener('input', () => {
+            clearTimeout(saveTimer);
+            saveTimer = setTimeout(() => {
+                StorageHelper.set('norway26-note-' + dayId, ta.value);
+                badge.classList.add('show');
+                setTimeout(() => badge.classList.remove('show'), 2000);
+            }, 600);
+        });
+    }
 
     fetchLiveExchangeRate();
     updateBudgetHeader();
