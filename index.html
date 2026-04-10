@@ -3,175 +3,318 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>נורווגיה 2026 — Brussels Airlines Edition</title>
+    <title>נורווגיה 2026 — המסע המשפחתי</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* כאן מופיע כל ה-CSS המקורי מההודעה הראשונה שלך */
-        /* ... (נשמר בדיוק כפי שהיה) ... */
+        :root {
+            --fjord: #0a1628; --deep: #0d1f3c; --midnight: #112244;
+            --glacier: #a8d8ea; --ice: #dff0f7;
+            --aurora-g: #00c9a7; --aurora-b: #4facfe;
+            --gold: #f4c430; --coral: #e85d4a; --restaurant: #ff9a76;
+            --white: #f8f9fa; --muted: rgba(168,216,234,0.55);
+            --border: rgba(168,216,234,0.15); --card-bg: rgba(17,34,68,0.75);
+            --sidebar-w: 280px;
+            --text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            --box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            --card-border-glow: 1px solid var(--border);
+        }
+        body.light-mode {
+            --fjord: #f0f4f8; --deep: #e2eaf4; --midnight: #d4e0f0;
+            --glacier: #1a6fa8; --ice: #1a6fa8;
+            --aurora-g: #008f75; --aurora-b: #1a6fa8;
+            --gold: #c4970a; --coral: #c04030; --restaurant: #c06030;
+            --white: #1a2233; --muted: rgba(26,111,168,0.7);
+            --border: rgba(26,111,168,0.2); --card-bg: rgba(255,255,255,0.85);
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; height: 100dvh; overflow: hidden; font-family: 'Heebo', sans-serif; color: var(--white); background-color: var(--fjord); }
+        .bg-layer-flag { position: fixed; inset: 0; z-index: 1; pointer-events: none; background-color: #2a0507; background-image: linear-gradient(180deg, transparent 41%, #050c18 41%, #050c18 59%, transparent 59%), linear-gradient(180deg, transparent 38%, rgba(223, 240, 247, 0.1) 38%, rgba(223, 240, 247, 0.1) 62%, transparent 62%); }
+        .shell { position: relative; z-index: 10; display: flex; flex-direction: column; height: 100%; }
+        header { display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 68px; flex-shrink: 0; border-bottom: 1px solid var(--border); backdrop-filter: blur(12px); background: rgba(10,22,40,0.6); gap: 12px; }
+        .header-brand { display: flex; align-items: center; gap: 14px; }
+        .brand-title { font-family: 'Playfair Display', serif; font-size: 1.25em; font-weight: 700; }
+        .header-budget { display: flex; flex-direction: column; align-items: center; background: rgba(0,201,167,0.08); padding: 4px 14px; border-radius: 10px; }
+        .header-budget-value { font-size: 0.9em; font-weight: 800; color: var(--aurora-g); }
+        .main-container { display: flex; flex: 1; overflow: hidden; }
+        .sidebar { width: var(--sidebar-w); flex-shrink: 0; overflow-y: auto; border-left: 1px solid var(--border); background: rgba(7,18,33,0.5); padding: 12px 0; }
+        .day-btn { display: flex; align-items: center; gap: 12px; padding: 12px 20px; cursor: pointer; border: none; background: transparent; color: inherit; width: 100%; text-align: start; border-radius: 8px; margin-bottom: 4px; }
+        .day-btn.active { background: rgba(0,201,167,0.1); border-right: 3px solid var(--aurora-g); }
+        .day-num-badge { width: 34px; height: 34px; border-radius: 50%; background: rgba(168,216,234,0.1); display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        .content { flex: 1; overflow-y: auto; padding: 28px 32px; display: flex; flex-direction: column; gap: 20px; }
+        .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .info-card { background: var(--card-bg); border: var(--card-border-glow); border-radius: 16px; overflow: hidden; }
+        .card-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.8em; }
+        .card-img { width: 100%; height: 170px; background: #000; position: relative; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; }
+        .card-text { padding: 16px; font-size: 0.9em; line-height: 1.6; }
+        .countdown-strip { display: flex; align-items: center; justify-content: center; gap: 18px; padding: 7px 20px; background: rgba(0,201,167,0.06); border-bottom: 1px solid var(--border); }
+        .cd-num { font-weight: 900; color: var(--aurora-g); }
+        .tag { padding: 4px 12px; border-radius: 99px; font-size: 0.75em; background: rgba(168,216,234,0.1); }
+        @media (max-width: 860px) {
+            .main-container { flex-direction: column; }
+            .sidebar { width: 100%; height: 80px; display: flex; flex-direction: row; border-left: none; border-bottom: 1px solid var(--border); }
+            .day-btn { min-width: 80px; flex-direction: column; padding: 8px; }
+            .cards-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
     <div class="bg-layer-flag"></div>
-    <div class="bg-layer-wave"></div>
-    <div class="bg-layer-noise"></div>
-    <canvas id="confetti-canvas"></canvas>
-    
     <div class="shell">
         <header>
             <div class="header-brand">
-                <span class="brand-flag">🇳🇴</span>
+                <span style="font-size: 1.8em;">🇳🇴</span>
                 <div class="brand-text">
                     <span class="brand-title">נורווגיה 2026</span>
-                    <span class="brand-sub">Brussels Airlines | 7LKPGD</span>
+                    <span style="font-size: 0.7em; color: var(--glacier);">BRUSSELS AIRLINES | 7LKPGD</span>
                 </div>
             </div>
-            <div class="header-budget" id="header-budget">
-                <div class="header-budget-label">תקציב משוער</div>
-                <div class="header-budget-value" id="budget-nok-total">—</div>
-                <div class="header-budget-ils" id="budget-ils-total"></div>
+            <div class="header-budget">
+                <div class="header-budget-value" id="budget-total">-- NOK</div>
+                <div style="font-size: 0.6em;">₪ <span id="budget-ils">--</span></div>
             </div>
-            <div class="header-right">
-                <button class="icon-btn" id="theme-toggle">🌙</button>
-                <div class="progress-wrap">
-                    <div class="progress-bar-outer"><div class="progress-bar-inner" id="progress-bar"></div></div>
-                    <span class="progress-pct" id="progress-pct">0%</span>
-                </div>
-            </div>
+            <button class="icon-btn" id="theme-toggle" style="background:none; border:none; cursor:pointer; font-size:1.2em;">🌙</button>
         </header>
 
-        <div class="countdown-strip" id="countdown-strip">
-            <span class="countdown-label" id="countdown-label">יוצאים בעוד</span>
-            <div class="countdown-blocks">
-                <div class="cd-block"><span class="cd-num" id="cd-days">—</span><span class="cd-unit">ימים</span></div>
-                <span class="cd-sep">:</span>
-                <div class="cd-block"><span class="cd-num" id="cd-hours">—</span><span class="cd-unit">שעות</span></div>
-            </div>
+        <div class="countdown-strip">
+            <span style="font-size:0.8em;">יוצאים בעוד:</span>
+            <div id="countdown-val" class="cd-num">-- ימים</div>
         </div>
 
         <div class="main-container">
             <nav class="sidebar" id="sidebar"></nav>
-            <main class="content" id="content"></main>
+            <main class="content" id="content">
+                <div style="display:flex; align-items:center; justify-content:center; height:100%; opacity:0.5;">
+                    טוען מסלול...
+                </div>
+            </main>
         </div>
     </div>
 
     <script>
         const trip = [
-            { id:1, date:"12/08", lat:59.91, lon:10.75, stay:"אוסלו (Oslo)", title:"נחיתה באוסלו", flight:"Brussels Airlines SN3290 | נחיתה 17:15", km: 50,
-              drive:"נחיתה ב-Gardermoen, איסוף רכב ונסיעה ל-Rostockgata 82 (אזור Gamle Oslo).",
-              main:"צ'ק-אין לדירה של Mya. התארגנות וסיבוב ערב ב-Barcode.",
-              kids:"צפייה באוניות בנמל הקרוב לדירה.",
-              restaurant: { name: "Oslo Street Food", desc: "מגוון עצום של דוכני אוכל איכותיים.", source: "Visit Oslo" },
-              imgD:"Oslo Gardermoen", imgM:"Rostockgata Oslo", imgK:"Oslo Opera", gear:["דרכונים", "מפתח לדירה"], map:"Rostockgata 82, Oslo",
-              costs:[{icon:"🚗", name:"חניה באוסלו", amount:"300 NOK", per:"ליום"}], totalNok: 300 },
+            { id:1, date:"12/08", lat:59.91, lon:10.75, stay:"אוסלו (Oslo)", title:"נחיתה והתמקמות", flight:"Brussels SN3290 | נחיתה 17:15", km: 45,
+              drive:"נחיתה ב-Gardermoen, איסוף רכב ונסיעה לדירה ב-Rostockgata 82 באזור ה-Barcode.",
+              main:"צ'ק-אין לדירה של Mya. הליכה ראשונה בין מבני הארכיטקטורה המודרנית של אוסלו.",
+              kids:"צפייה באוניות הענק בנמל והליכה על גג בית האופרה.",
+              imgD:"Oslo Airport", imgM:"Oslo Barcode", imgK:"Oslo Opera House", gear:["דרכונים", "כתובת הדירה"], map:"Rostockgata 82, Oslo",
+              costs:[{name:"חניה", amount:300}], totalNok: 300 },
+            
+            { id:2, date:"13/08", lat:59.92, lon:10.70, stay:"אוסלו (Oslo)", title:"תרבות וטבע בעיר", km: 0,
+              drive:"שימוש בתחבורה ציבורית (חשמלית).",
+              main:"פארק ויגילנד עם מאות הפסלים ומוזיאון ה-Fram של ספינות הקוטב.",
+              kids:"ריצה במדשאות הפארק וסיור בתוך הספינה העתיקה.",
+              imgD:"Oslo Tram", imgM:"Vigeland Park", imgK:"Fram Museum", gear:["נעלי הליכה"], map:"Vigeland Park",
+              costs:[{name:"Oslo Pass", amount:520}], totalNok: 1040 },
 
-            { id:2, date:"13/08", lat:59.92, lon:10.70, stay:"אוסלו (Oslo)", title:"פארק ויגילנד ומוזיאונים", km: 0,
-              main:"פארק הפסלים Vigeland ומוזיאון ה-Fram המרשים.",
-              kids:"ריצה במרחבים הירוקים של הפארק וסיור בספינת הקוטב.",
-              imgD:"Vigeland Park", imgM:"Fram Museum", imgK:"Oslo Tram", gear:["נעלי הליכה"], map:"Vigeland Park",
-              costs:[{icon:"🏛️", name:"Oslo Pass", amount:"520 NOK", per:"מבוגר"}], totalNok: 1040 },
+            { id:3, date:"14/08", lat:60.39, lon:5.32, stay:"ברגן (Bergen)", title:"רכבת הנוף לברגן", km: 480,
+              drive:"נסיעה ברכבת ה-Bergensbanen מאוסלו לברגן (כ-7 שעות).",
+              main:"חציית רמת הארדנגרווידה - נופים אלפיניים מהחלון.",
+              kids:"זמן משחקים וסרטים ברכבת, עצירה בנקודה הכי גבוהה (Finse).",
+              imgD:"Bergensbanen", imgM:"Hardangervidda", imgK:"Train kids", gear:["נשנושים"], map:"Bergen Station",
+              costs:[{name:"כרטיסי רכבת", amount:900}], totalNok: 1800 },
 
-            { id:3, date:"14/08", lat:60.39, lon:5.32, stay:"ברגן (Bergen)", title:"רכבת אוסלו-ברגן", km: 480,
-              drive:"צ'ק-אאוט מאוסלו עד 12:00. נסיעה ברכבת ה-Bergensbanen המרהיבה.",
-              main:"חציית רמת הארדנגרווידה ברכבת (נחשבת לאחת היפות בעולם).",
-              kids:"זמן איכות ברכבת עם משחקים ונופים משתנים.",
-              imgD:"Bergensbanen", imgM:"Hardangervidda", imgK:"Train window", gear:["נשנושים לרכבת"], map:"Bergen Station",
-              costs:[{icon:"🚂", name:"כרטיס רכבת", amount:"~900 NOK", per:"מבוגר"}], totalNok: 1800 },
+            { id:4, date:"15/08", lat:60.63, lon:6.42, stay:"ווס (Voss)", title:"הגעה לווס", km: 100,
+              drive:"איסוף רכב בברגן ונסיעה מזרחה לעמק ווס.",
+              main:"התמקמות בעיירת האקסטרים ווס וטיול סביב האגם.",
+              kids:"גן שעשועים ליד אגם Vangsvatnet.",
+              imgD:"Bergen to Voss", imgM:"Voss village", imgK:"Voss lake", gear:["בגדי נוח"], map:"Voss",
+              costs:[{name:"אגרות", amount:100}], totalNok: 100 },
 
-            { id:4, date:"15/08", lat:60.63, lon:6.42, stay:"ווס (Voss)", title:"התאקלמות בווס", km: 100,
-              main:"איסוף רכב בברגן ונסיעה לווס. סיור בעיירה.",
-              kids:"טיול קליל סביב האגם.",
-              imgD:"Voss Norway", imgM:"Voss village", imgK:"Vangsvatnet", gear:["בגדי נוח"], map:"Voss",
-              costs:[{icon:"🚗", name:"אגרות כביש", amount:"100 NOK", per:""}], totalNok: 100 },
+            { id:5, date:"16/08", lat:60.63, lon:6.42, stay:"ווס (Voss)", title:"פסגת הר הגנורן", km: 0,
+              main:"עלייה ב-Voss Gondol לתצפית פנורמית מדהימה.",
+              kids:"טיול קל בפסגה (מסלול Hanguren) שמתאים בדיוק לבנות.",
+              imgD:"Voss Mountains", imgM:"Voss Gondola", imgK:"Hiking kids", gear:["מעיל רוח"], map:"Voss Resort",
+              costs:[{name:"רכבל", amount:360}], totalNok: 720 },
 
-            { id:5, date:"16/08", lat:60.63, lon:6.42, stay:"ווס (Voss)", title:"רכבל ווס", km: 0,
-              main:"עלייה ב-Voss Gondol לתצפית על ההרים.",
-              kids:"מסלול הליכה קצר ונוח בפסגת הר Hanguren.",
-              imgD:"Voss Mountains", imgM:"Voss Gondola", imgK:"Kids hiking", gear:["מעיל רוח"], map:"Voss Resort",
-              costs:[{icon:"🚡", name:"רכבל", amount:"360 NOK", per:"מבוגר"}], totalNok: 920 },
+            { id:6, date:"17/08", lat:60.86, lon:7.11, stay:"ווס (Voss)", title:"פלאם ומפלים", km: 120,
+              main:"נסיעה ברכבת ה-Flåmsbana המפורסמת.",
+              kids:"צפייה במפל Kjosfossen והדמות המרקדת.",
+              imgD:"Nærøydalen", imgM:"Flamsbana", imgK:"Waterfall kids", gear:["מצלמה"], map:"Flåm",
+              costs:[{name:"רכבת פלאם", amount:850}], totalNok: 1700 },
 
-            { id:6, date:"17/08", lat:60.86, lon:7.11, stay:"ווס (Voss)", title:"יום פלאם (Flåm)", km: 130,
-              main:"רכבת ה-Flåmsbana והמפל המנגן Kjosfossen.",
-              kids:"חוויית 'רכבת הקסמים' בתוך המנהרות.",
-              imgD:"Flam Railway", imgM:"Kjosfossen", imgK:"Flam station", gear:["מצלמה"], map:"Flåm",
-              costs:[{icon:"🚂", name:"רכבת פלאם", amount:"850 NOK", per:"מבוגר"}], totalNok: 1700 },
-
-            { id:7, date:"18/08", lat:61.83, lon:6.81, stay:"אולדן (Olden)", title:"צ'ק-אין בבקתת קטיל", km: 220,
-              drive:"צ'ק-אין ב-Fremsteteigen החל מ-16:00. לינה על שפת הפיורד.",
-              main:"התמקמות בבקתה באולדן. נוף פיורד עוצר נשימה.",
-              kids:"זריקת אבנים לפיורד מהמרפסת.",
-              imgD:"Olden Fjord", imgM:"Olden Cabin", imgK:"Fjord kids", gear:["אוכל לבישול עצמי"], map:"Fremsteteigen, Olden",
-              costs:[{icon:"⛴️", name:"מעבורת בדרך", amount:"300 NOK", per:""}], totalNok: 300 },
+            { id:7, date:"18/08", lat:61.83, lon:6.81, stay:"אולדן (Olden)", title:"בקתת הפיורד", km: 220,
+              drive:"נסיעה צפונה לצ'ק-אין ב-Fremsteteigen (קטיל) החל מ-16:00.",
+              main:"התמקמות בבקתה על שפת המים באולדן.",
+              kids:"זריקת אבנים למים מהמרפסת של הבקתה.",
+              imgD:"Nordfjord", imgM:"Olden Cabin", imgK:"Fjord shore", gear:["מצרכי אוכל"], map:"Fremsteteigen",
+              costs:[{name:"מעבורות", amount:300}], totalNok: 300 },
 
             { id:8, date:"19/08", lat:61.66, lon:6.81, stay:"אולדן (Olden)", title:"קרחון בריקסדל", km: 40,
-              main:"קרחון Briksdal - נסיעה ב'רכבי טרולים'.",
-              kids:"נסיעה בבאגי הפתוח (Troll Cars) - חוויה מרגשת.",
-              imgD:"Oldevatnet", imgM:"Briksdalsbreen", imgK:"Troll car kids", gear:["מעיל חם"], map:"Briksdalsbreen",
-              costs:[{icon:"🚙", name:"Troll Car", amount:"300 NOK", per:"מבוגר"}], totalNok: 900 },
+              main:"טיול לקרחון Briksdal עם רכבי הטרולים.",
+              kids:"נסיעה ב-Troll Cars - חוויה מרגשת וקופצנית.",
+              imgD:"Oldevatnet", imgM:"Briksdalsbreen", imgK:"Troll cars", gear:["בגד חם"], map:"Briksdalsbreen",
+              costs:[{name:"רכב טרולים", amount:300}], totalNok: 600 },
 
             { id:9, date:"20/08", lat:62.15, lon:6.07, stay:"וולדה (Volda)", title:"הגעה ל-Sjøbuda", km: 90,
-              drive:"צ'ק-אאוט באולדן ב-11:00. הגעה לוולדה (Hamnegata 8) אחרי 15:00.",
-              main:"התמקמות בדירה בוולדה. פגישה עם המארחים ב-Sjøbuda.",
-              kids:"סיור בנמל וולדה וביקור בספרייה.",
-              imgD:"Volda Harbor", imgM:"Hamnegata 8", imgK:"Volda Kids", gear:["מסמכי צ'ק-אין"], map:"Hamnegata 8, Volda",
-              costs:[{icon:"⛴️", name:"מעבורת", amount:"250 NOK", per:""}], totalNok: 250 },
+              drive:"מעבר לוולדה (Hamnegata 8) אחרי השעה 15:00.",
+              main:"התמקמות בדירה המיוחדת על המים בוולדה.",
+              kids:"סיור בנמל וצפייה בדייגים.",
+              imgD:"Volda Fjord", imgM:"Volda House", imgK:"Harbor kids", gear:[], map:"Hamnegata 8, Volda",
+              costs:[{name:"מעבורת", amount:250}], totalNok: 250 },
 
             { id:10, date:"21/08", lat:62.10, lon:7.20, stay:"וולדה (Volda)", title:"גייראנגר פיורד", km: 160,
-              main:"שיט בפיורד גייראנגר - מורשת עולמית.",
-              kids:"ספירת מפלי 'שבע האחיות' מהספינה.",
-              imgD:"Geirangerfjord", imgM:"Seven Sisters", imgK:"Boat trip", gear:["בגדי גשם"], map:"Geiranger",
-              costs:[{icon:"⛴️", name:"שיט", amount:"600 NOK", per:"מבוגר"}], totalNok: 1200 },
+              main:"שיט בפיורד המפורסם בעולם - גייראנגר.",
+              kids:"ספירת 7 המפלים מהספינה.",
+              imgD:"Eagle Road", imgM:"Geirangerfjord", imgK:"Waterfalls", gear:["מעיל גשם"], map:"Geiranger",
+              costs:[{name:"שיט", amount:600}], totalNok: 1200 },
 
             { id:11, date:"22/08", lat:62.47, lon:6.23, stay:"וולדה (Volda)", title:"אולסונד והר אקסלה", km: 140,
-              main:"תצפית מהר Aksla על העיר אולסונד.",
-              kids:"המוזיאון הפתוח Sunnmøre - ספינות ויקינגיות.",
-              imgD:"Alesund", imgM:"Aksla", imgK:"Viking ship", gear:["נעלי הליכה"], map:"Alesund",
-              costs:[{icon:"🏛️", name:"מוזיאון", amount:"180 NOK", per:"מבוגר"}], totalNok: 360 },
+              main:"תצפית על העיר אולסונד וביקור במוזיאון הפתוח.",
+              kids:"עלייה על ספינה ויקינגית משוחזרת במוזיאון Sunnmøre.",
+              imgD:"Alesund View", imgM:"Aksla", imgK:"Viking Ship", gear:["נעלי נוח"], map:"Alesund",
+              costs:[{name:"מוזיאון", amount:180}], totalNok: 360 },
 
             { id:12, date:"23/08", lat:62.47, lon:6.15, stay:"וולדה (Volda)", title:"אקווריום אולסונד", km: 150,
-              main:"Atlanterhavsparken - האקווריום הגדול.",
-              kids:"האכלת פינגווינים וכלבי ים.",
-              imgD:"Aquarium", imgM:"Penguins", imgK:"Seal feeding", gear:["מצלמה"], map:"Atlanterhavsparken",
-              costs:[{icon:"🐠", name:"אקווריום", amount:"250 NOK", per:"מבוגר"}], totalNok: 500 },
+              main:"ביקור באקווריום המים המלוחים Atlanterhavsparken.",
+              kids:"מופע האכלה של הפינגווינים וכלבי הים.",
+              imgD:"Coast Norway", imgM:"Aquarium", imgK:"Penguins", gear:[], map:"Atlanterhavsparken",
+              costs:[{name:"אקווריום", amount:250}], totalNok: 500 },
 
-            { id:13, date:"24/08", lat:62.15, lon:6.07, stay:"וולדה (Volda)", title:"טיול רגוע בוולדה", km: 0,
-              main:"יום מנוחה וטיול באגם Røtevatnet.",
-              kids:"זמן בגן השעשועים.",
-              imgD:"Volda Lake", imgM:"Nature", imgK:"Playground", gear:[], map:"Volda",
+            { id:13, date:"24/08", lat:62.15, lon:6.07, stay:"וולדה (Volda)", title:"טבע מקומי בוולדה", km: 0,
+              main:"יום רגוע לטיול סביב אגם Røtevatnet.",
+              kids:"זמן חופשי בגן השעשועים.",
+              imgD:"Volda Nature", imgM:"Volda Lake", imgK:"Kids playing", gear:[], map:"Volda",
               costs:[], totalNok: 0 },
 
             { id:14, date:"25/08", lat:61.90, lon:7.00, stay:"סטרין (Stryn)", title:"תצפית דאטניפה", km: 120,
-              main:"נסיעה לכיוון תצפית Dalsnibba (גובה 1500 מ').",
-              kids:"משחק בשלג (גם בקיץ!) בפסגה.",
-              imgD:"Dalsnibba", imgM:"Snow in summer", imgK:"Snowballs", gear:["בגדים חמים"], map:"Dalsnibba",
-              costs:[{icon:"🚗", name:"אגרת דאטניפה", amount:"250 NOK", per:""}], totalNok: 250 },
+              main:"עלייה לתצפית Dalsnibba (בגובה 1500 מטר).",
+              kids:"לגעת בשלג באמצע הקיץ.",
+              imgD:"Dalsnibba", imgM:"Snow", imgK:"Snowballs", gear:["בגדים חמים"], map:"Dalsnibba",
+              costs:[{name:"אגרה", amount:250}], totalNok: 250 },
 
-            { id:15, date:"26/08", lat:61.50, lon:7.30, stay:"לומי (Lom)", title:"כנסיית הלוחות של לומי", km: 100,
-              main:"ביקור בכנסיית הלוחות העתיקה בלומי (Lom Stave Church).",
-              kids:"המאפייה המפורסמת של לומי - מאפים מעולים.",
-              imgD:"Lom Stave Church", imgM:"Lom Bakery", imgK:"Cinnamon rolls", gear:[], map:"Lom, Norway",
+            { id:15, date:"26/08", lat:61.50, lon:7.30, stay:"לומי (Lom)", title:"המאפייה של לומי", km: 100,
+              main:"ביקור בכנסיית הלוחות וטעימת מאפים מפורסמים.",
+              kids:"לחמניות קינמון ענקיות במאפיית Lom.",
+              imgD:"Lom Church", imgM:"Lom Bakery", imgK:"Cinnamon rolls", gear:[], map:"Lom",
               costs:[], totalNok: 0 },
 
-            { id:16, date:"27/08", lat:61.00, lon:10.00, stay:"דרומה לאוסלו", title:"הדרך חזרה דרומה", km: 250,
-              main:"נסיעה דרך עמק Gudbrandsdalen לכיוון אוסלו.",
-              kids:"צפייה בחוות ובכבשים לאורך הדרך.",
-              imgD:"Gudbrandsdalen", imgM:"Countryside", imgK:"Sheep", gear:[], map:"Lillehammer",
-              costs:[{icon:"⛽", name:"דלק", amount:"600 NOK", per:""}], totalNok: 600 },
+            { id:16, date:"27/08", lat:61.00, lon:10.00, stay:"דרומה לאוסלו", title:"הדרך חזרה", km: 250,
+              main:"נסיעה נופית בעמק Gudbrandsdalen.",
+              kids:"זיהוי חיות וחוות מהדרך.",
+              imgD:"Gudbrandsdalen", imgM:"Valley", imgK:"Sheep", gear:[], map:"Lillehammer",
+              costs:[{name:"דלק", amount:600}], totalNok: 600 },
 
             { id:17, date:"28/08", lat:60.19, lon:11.10, stay:"שדה התעופה OSL", title:"התארגנות לטיסה", km: 100,
-              drive:"הגעה למלון בשדה התעופה Gardermoen והחזרת הרכב.",
-              main:"ערב אחרון בנורווגיה. אריזות ושינה מוקדמת.",
-              kids:"שינה מוקדמת לקראת קימה ב-04:00.",
-              imgD:"Airport Hotel", imgM:"Packing", imgK:"Last night", gear:["דרכונים מוכנים"], map:"Oslo Airport",
-              costs:[{icon:"🏨", name:"מלון שדה תעופה", amount:"1500 NOK", per:""}], totalNok: 1500 },
+              drive:"צ'ק-אין למלון בשדה התעופה Gardermoen.",
+              main:"החזרת הרכב השכור ואריזות אחרונות.",
+              kids:"שינה מוקדמת לקראת הקימה ב-04:00.",
+              imgD:"Airport", imgM:"Packing", imgK:"Last night", gear:["דרכונים מוכנים"], map:"Gardermoen",
+              costs:[{name:"מלון", amount:1500}], totalNok: 1500 },
 
-            { id:18, date:"29/08", lat:60.19, lon:11.10, stay:"טיסה", title:"חזרה לישראל", flight:"Brussels Airlines SN2288 | המראה 06:45", km: 0,
+            { id:18, date:"29/08", lat:60.19, lon:11.10, stay:"טיסה", title:"חזרה לישראל", flight:"Brussels SN2288 | המראה 06:45", km: 0,
               main:"טיסה דרך בריסל ונחיתה בישראל ב-15:15.",
-              kids:"שינה במטוס.",
-              imgD:"Brussels Airlines", imgM:"Home", imgK:"Tel Aviv", gear:["Boarding Pass"], map:"Oslo Airport",
+              kids:"שינה עמוקה במטוס.",
+              imgD:"Brussels Airlines", imgM:"Home", imgK:"Tel Aviv", gear:["כרטיסי עלייה למטוס"], map:"Oslo Airport",
               costs:[], totalNok: 0 }
         ];
 
-        // פונקציות הניהול (render, loadDay, וכו') נשארות זהות למקור שלך
-        /* ... */
+        let currentId = 1;
+        const rate = 0.34;
+
+        function renderSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.innerHTML = '';
+            trip.forEach(day => {
+                const btn = document.createElement('button');
+                btn.className = `day-btn ${day.id === currentId ? 'active' : ''}`;
+                btn.innerHTML = `<div class="day-num-badge">${day.id}</div><div><div style="font-size:0.7em;">${day.date}</div><div style="font-size:0.8em; font-weight:700;">${day.title}</div></div>`;
+                btn.onclick = () => loadDay(day.id);
+                sidebar.appendChild(btn);
+            });
+        }
+
+        async function loadDay(id) {
+            currentId = id;
+            renderSidebar();
+            const d = trip.find(x => x.id === id);
+            const content = document.getElementById('content');
+            
+            content.innerHTML = `
+                <div style="margin-bottom:10px; color:var(--aurora-g); font-size:0.8em; font-weight:700;">יום ${d.id} · ${d.date}</div>
+                <h2 style="font-family:'Playfair Display'; margin-bottom:15px;">${d.title}</h2>
+                <div style="display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap;">
+                    <span class="tag">🏠 ${d.stay}</span>
+                    <span class="tag">🚗 ${d.km} ק"מ</span>
+                    ${d.flight ? `<span class="tag" style="background:rgba(79,172,254,0.2)">✈️ ${d.flight}</span>` : ''}
+                </div>
+
+                <div class="cards-grid">
+                    <div class="info-card">
+                        <div class="card-header">🚗 יומן דרכים</div>
+                        <div class="card-img" id="img-d"></div>
+                        <div class="card-text">${d.drive}</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="card-header">🎯 אטרקציה מרכזית</div>
+                        <div class="card-img" id="img-m"></div>
+                        <div class="card-text">${d.main}</div>
+                    </div>
+                    <div class="info-card" style="grid-column: 1 / -1;">
+                        <div class="card-header">✨ דגש לבנות (4 ו-8)</div>
+                        <div class="card-img" id="img-k" style="height:120px;"></div>
+                        <div class="card-text">${d.kids}</div>
+                    </div>
+                </div>
+
+                <div class="info-card" style="margin-top:20px;">
+                    <div class="card-header">🎒 להכין בתיק</div>
+                    <div class="card-text">${d.gear.join(', ') || 'אין ציוד מיוחד'}</div>
+                </div>
+
+                <div style="margin-top:20px; padding:15px; background:rgba(0,201,167,0.05); border-radius:12px;">
+                    <div style="font-weight:700; margin-bottom:10px; font-size:0.8em;">📍 מפת היעד: ${d.map}</div>
+                    <a href="https://www.google.com/maps/search/${encodeURIComponent(d.map)}" target="_blank" style="color:var(--aurora-b); text-decoration:none; font-size:0.9em;">פתח ניווט ב-Google Maps ↗</a>
+                </div>
+            `;
+
+            fetchImg('img-d', d.imgD);
+            fetchImg('img-m', d.imgM);
+            fetchImg('img-k', d.imgK);
+            updateProgress();
+        }
+
+        async function fetchImg(divId, query) {
+            const el = document.getElementById(divId);
+            try {
+                const res = await fetch(`https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(query)}&gsrnamespace=6&prop=imageinfo&iiprop=url&iiurlwidth=400&format=json&origin=*`);
+                const data = await res.json();
+                const pages = data.query.pages;
+                const url = pages[Object.keys(pages)[0]].imageinfo[0].thumburl;
+                el.innerHTML = `<img src="${url}" loading="lazy">`;
+            } catch(e) {
+                el.innerHTML = `<div style="display:flex; align-items:center; justify-content:center; height:100%; font-size:2em;">🏔️</div>`;
+            }
+        }
+
+        function updateProgress() {
+            const pct = Math.round((currentId / trip.length) * 100);
+            document.getElementById('progress-bar').style.width = pct + '%';
+            document.getElementById('progress-pct').innerText = pct + '%';
+        }
+
+        function updateBudget() {
+            const total = trip.reduce((s, d) => s + (d.totalNok || 0), 0);
+            document.getElementById('budget-total').innerText = total.toLocaleString() + ' NOK';
+            document.getElementById('budget-ils').innerText = Math.round(total * rate).toLocaleString();
+        }
+
+        function initCountdown() {
+            const target = new Date('2026-08-12T04:50:00');
+            const now = new Date();
+            const diff = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
+            document.getElementById('countdown-val').innerText = diff > 0 ? `${diff} ימים` : 'המסע החל!';
+        }
+
+        document.getElementById('theme-toggle').onclick = () => {
+            document.body.classList.toggle('light-mode');
+            document.getElementById('theme-toggle').innerText = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+        };
+
+        updateBudget();
+        initCountdown();
+        loadDay(1);
     </script>
 </body>
 </html>
