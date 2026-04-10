@@ -3,304 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="נורווגיה 26">
-    <meta name="theme-color" content="#0a1628">
     <title>נורווגיה 2026 — המסע המשפחתי</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Heebo:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --fjord: #0a1628; --deep: #0d1f3c; --midnight: #112244;
-            --glacier: #a8d8ea; --ice: #dff0f7;
-            --aurora-g: #00c9a7; --aurora-b: #4facfe;
-            --gold: #f4c430; --coral: #e85d4a; --restaurant: #ff9a76;
+            --glacier: #a8d8ea; --ice: #dff0f7; --aurora-g: #00c9a7; --aurora-b: #4facfe;
             --white: #f8f9fa; --muted: rgba(168,216,234,0.55);
             --border: rgba(168,216,234,0.15); --card-bg: rgba(17,34,68,0.75);
             --sidebar-w: 280px;
-            --flag-red: #2a0507; --flag-white: rgba(223, 240, 247, 0.25); --flag-blue: #050c18;
-            --text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-            --box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            --card-border-glow: 1px solid var(--border);
         }
-        body.light-mode {
-            --fjord: #f0f4f8; --deep: #e2eaf4; --midnight: #d4e0f0;
-            --glacier: #1a6fa8; --ice: #1a6fa8;
-            --aurora-g: #008f75; --aurora-b: #1a6fa8;
-            --gold: #c4970a; --coral: #c04030; --restaurant: #c06030;
-            --white: #1a2233; --muted: rgba(26,111,168,0.7);
-            --border: rgba(26,111,168,0.2); --card-bg: rgba(255,255,255,0.85);
-            --flag-red: rgba(176, 32, 43, 0.1); --flag-white: rgba(255, 255, 255, 0.4); --flag-blue: rgba(0, 32, 91, 0.05);
-            --text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-            --box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
-        body.light-mode header { background: rgba(220,232,248,0.8); }
-        body.light-mode .sidebar { background: rgba(230,240,255,0.7); }
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        * { -webkit-tap-highlight-color: transparent; }
-        button, [role="button"], a, label, .day-btn, .check-card, .icon-btn, .nav-btn, .day-arrow-btn, .print-btn, .sidebar-gear-btn, .modal-close, .modal-print-btn {
-            touch-action: manipulation; -webkit-user-select: none; user-select: none;
-        }
-        :focus-visible { outline: 2px solid var(--aurora-g); outline-offset: 3px; border-radius: 4px; }
-        html, body { height: 100%; height: 100dvh; overflow: hidden; font-family: 'Heebo', sans-serif; color: var(--white); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; background-color: var(--fjord); }
-        .bg-layer-flag { position: fixed; inset: 0; z-index: 1; pointer-events: none; background-color: var(--flag-red); background-image: linear-gradient(180deg, transparent 41%, var(--flag-blue) 41%, var(--flag-blue) 59%, transparent 59%), linear-gradient(180deg, transparent 38%, var(--flag-white) 38%, var(--flag-white) 62%, transparent 62%), linear-gradient(90deg, transparent 24%, var(--flag-blue) 24%, var(--flag-blue) 36%, transparent 36%), linear-gradient(90deg, transparent 21%, var(--flag-white) 21%, var(--flag-white) 39%, transparent 39%); }
-        .bg-layer-wave { position: fixed; inset: -50%; z-index: 2; pointer-events: none; background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 0%, transparent 50%), radial-gradient(circle at 30% 70%, rgba(0,0,0,0.3) 0%, transparent 60%); animation: mobileSafeWave 12s ease-in-out infinite alternate; }
-        body.light-mode .bg-layer-wave { opacity: 0.4; }
-        @keyframes mobileSafeWave { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(15%, 10%) scale(1.1); } }
-        .bg-layer-noise { position: fixed; inset: 0; z-index: 3; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E"); opacity: 0.4; }
-        .shell { position: relative; z-index: 10; display: flex; flex-direction: column; height: 100%; height: 100dvh; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
-        header { display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 68px; flex-shrink: 0; border-bottom: 1px solid var(--border); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(10,22,40,0.6); position: relative; gap: 12px; flex-wrap: nowrap; }
-        header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--aurora-g), var(--aurora-b), transparent); opacity: 0.6; }
-        .header-brand { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
-        .brand-flag { font-size: 1.8em; filter: drop-shadow(0 0 10px rgba(79,172,254,0.4)); }
-        .brand-text { display: flex; flex-direction: column; line-height: 1; }
-        .brand-title { font-family: 'Playfair Display', serif; font-size: 1.25em; font-weight: 700; color: var(--white); letter-spacing: 0.02em; text-shadow: var(--text-shadow); }
-        .brand-sub { font-size: 0.7em; color: var(--glacier); letter-spacing: 0.15em; text-transform: uppercase; font-weight: 300; margin-top: 3px; text-shadow: var(--text-shadow); }
-        .header-budget { display: flex; flex-direction: column; align-items: center; background: rgba(0,201,167,0.08); border: 1px solid rgba(0,201,167,0.2); border-radius: 10px; padding: 4px 14px; flex-shrink: 0; box-shadow: var(--box-shadow); }
-        .header-budget-label { font-size: 0.6em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
-        .header-budget-value { font-size: 0.9em; font-weight: 800; color: var(--aurora-g); white-space: nowrap; text-shadow: var(--text-shadow); }
-        .header-budget-ils { font-size: 0.62em; color: var(--glacier); }
-        .header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-        .icon-btn { background: rgba(168,216,234,0.08); border: 1px solid var(--border); border-radius: 8px; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1em; transition: background 0.2s, border-color 0.2s; color: var(--glacier); outline: none; box-shadow: var(--box-shadow); }
-        .icon-btn:hover { background: rgba(168,216,234,0.15); border-color: rgba(168,216,234,0.3); }
-        .progress-wrap { display: flex; align-items: center; gap: 10px; }
-        .progress-label { font-size: 0.78em; color: var(--glacier); letter-spacing: 0.1em; text-transform: uppercase; }
-        .progress-bar-outer { width: 120px; height: 5px; background: rgba(168,216,234,0.15); border-radius: 99px; overflow: hidden; }
-        .progress-bar-inner { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--aurora-g), var(--aurora-b)); transition: width 0.6s cubic-bezier(.4,0,.2,1); box-shadow: 0 0 10px rgba(0,201,167,0.5); width: 0%; }
-        .progress-pct { font-size: 0.85em; font-weight: 700; color: var(--aurora-g); min-width: 36px; text-align: right; text-shadow: var(--text-shadow); }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Heebo', sans-serif; background-color: var(--fjord); color: var(--white); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+        /* Header */
+        header { display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 70px; border-bottom: 1px solid var(--border); backdrop-filter: blur(10px); z-index: 100; flex-shrink: 0; }
+        .brand-title { font-family: 'Playfair Display', serif; font-size: 1.2em; color: var(--white); }
+        .header-budget { text-align: left; }
+        .budget-val { color: var(--aurora-g); font-weight: 700; font-size: 0.9em; }
+
+        /* Main Layout */
         .main-container { display: flex; flex: 1; overflow: hidden; }
-        .sidebar { width: var(--sidebar-w); flex-shrink: 0; overflow-y: auto; border-left: 1px solid var(--border); background: rgba(7,18,33,0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 12px 0; scrollbar-width: thin; scrollbar-color: var(--border) transparent; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
-        .sidebar-label { font-size: 0.65em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); padding: 8px 20px 14px; display: block; text-shadow: var(--text-shadow); }
-        .sidebar-gear-btn { display: flex; align-items: center; gap: 10px; margin: 4px 12px 12px; padding: 10px 14px; background: rgba(244,196,48,0.08); border: 1px solid rgba(244,196,48,0.2); border-radius: 10px; cursor: pointer; transition: background 0.2s; font-size: 0.82em; font-weight: 600; color: var(--gold); outline: none; box-shadow: var(--box-shadow); border: none; }
-        .day-btn { display: flex; align-items: center; gap: 12px; padding: 12px 20px; cursor: pointer; transition: background 0.2s, border-color 0.2s; border: none; border-right: 3px solid transparent; border-left: none; position: relative; outline: none; border-radius: 8px; margin: 0 8px; background: transparent; color: inherit; font-family: inherit; text-align: start; -webkit-appearance: none; }
-        .day-num-badge { width: 34px; height: 34px; border-radius: 50%; background: rgba(168,216,234,0.1); border: 1px solid rgba(168,216,234,0.2); display: flex; align-items: center; justify-content: center; font-size: 0.78em; font-weight: 700; color: var(--glacier); flex-shrink: 0; position: relative; box-shadow: var(--box-shadow); text-shadow: var(--text-shadow); }
-        .day-btn.active .day-num-badge { background: rgba(0,201,167,0.2); border-color: var(--aurora-g); color: var(--aurora-g); }
-        .day-info { flex: 1; min-width: 0; }
-        .day-date { font-size: 0.65em; color: var(--muted); letter-spacing: 0.08em; margin-bottom: 2px; }
-        .day-title-text { font-size: 0.85em; font-weight: 500; color: var(--white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .content { flex: 1; overflow-y: auto; padding: 28px 32px; display: flex; flex-direction: column; gap: 20px; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
-        .day-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-        .day-main-title { font-family: 'Playfair Display', serif; font-size: 2em; font-weight: 700; color: var(--white); line-height: 1.15; margin-bottom: 12px; text-shadow: var(--text-shadow); }
-        .tags-row { display: flex; gap: 10px; flex-wrap: wrap; }
-        .tag { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 99px; font-size: 0.78em; font-weight: 500; letter-spacing: 0.02em; box-shadow: var(--box-shadow); }
-        .tag-stay { background: rgba(79,172,254,0.15); border: 1px solid rgba(79,172,254,0.3); color: var(--aurora-b); }
-        .tag-flight { background: rgba(232,93,74,0.15); border: 1px solid rgba(232,93,74,0.35); color: #ff8c7a; }
-        .tag-drive { background: rgba(168,216,234,0.15); border: 1px solid rgba(168,216,234,0.3); color: var(--glacier); }
-        .check-card { display: flex; align-items: center; gap: 14px; padding: 14px 20px; background: rgba(0,201,167,0.06); border: var(--card-border-glow); border-radius: 12px; cursor: pointer; transition: background 0.2s, transform 0.1s; flex-shrink: 0; box-shadow: var(--box-shadow); }
-        .info-card { background: var(--card-bg); border: var(--card-border-glow); border-radius: 16px; overflow: hidden; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; flex-direction: column; transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s; box-shadow: var(--box-shadow); }
-        .card-img { width: 100%; height: 170px; overflow: hidden; position: relative; background: rgba(168,216,234,0.08); cursor: zoom-in; }
-        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease, opacity 0.4s; display: block; opacity: 0; position: relative; z-index: 2; }
-        .card-img.loaded img { opacity: 1; }
-        .restaurant-card { background: rgba(255,154,118,0.06); border: 1px solid rgba(255,154,118,0.25); border-radius: 16px; padding: 18px 20px; display: flex; gap: 16px; align-items: flex-start; transition: transform 0.25s, box-shadow 0.25s; box-shadow: var(--box-shadow); }
-        .cost-card { background: rgba(0,201,167,0.05); border: var(--card-border-glow); border-radius: 16px; overflow: hidden; box-shadow: var(--box-shadow); }
-        .weather-card { background: rgba(79,172,254,0.06); border: 1px solid rgba(79,172,254,0.22); border-radius: 16px; overflow: hidden; transition: transform 0.25s; box-shadow: var(--box-shadow); }
-        .weather-loading { padding: 24px 20px; display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 0.82em; }
-        .countdown-strip { display: flex; align-items: center; justify-content: center; gap: 18px; padding: 7px 20px; background: rgba(0,201,167,0.06); border-bottom: 1px solid rgba(0,201,167,0.14); flex-shrink: 0; }
-        .cd-num { font-size: 1.3em; font-weight: 900; color: var(--aurora-g); font-family: 'Playfair Display', serif; }
-        .modal-overlay { position: fixed; inset: 0; z-index: 500; background: rgba(5,12,25,0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-        .modal-overlay.open { opacity: 1; pointer-events: all; }
-        .modal-box { background: #0d1f3c; border: var(--card-border-glow); border-radius: 20px; padding: 28px; width: 90%; max-width: 520px; box-shadow: 0 16px 40px rgba(0,0,0,0.6); }
-        #confetti-canvas { position: fixed; inset: 0; z-index: 600; pointer-events: none; display: none; }
-        /* ויתר ה-CSS מהקוד המקורי שלך... */
+
+        /* Sidebar (Desktop) */
+        .sidebar { width: var(--sidebar-w); overflow-y: auto; background: rgba(7,18,33,0.4); border-left: 1px solid var(--border); display: flex; flex-direction: column; padding: 10px 0; }
+        .day-btn { display: flex; align-items: center; gap: 12px; padding: 15px 20px; background: transparent; border: none; color: var(--white); cursor: pointer; text-align: right; border-right: 3px solid transparent; transition: 0.2s; }
+        .day-btn.active { background: rgba(0,201,167,0.1); border-right-color: var(--aurora-g); color: var(--aurora-g); }
+        .day-num { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--muted); display: flex; align-items: center; justify-content: center; font-size: 0.8em; }
+        .active .day-num { border-color: var(--aurora-g); }
+
+        /* Content Area */
+        .content { flex: 1; overflow-y: auto; padding: 25px; display: flex; flex-direction: column; gap: 20px; scroll-behavior: smooth; }
+        .day-main-title { font-family: 'Playfair Display', serif; font-size: 2em; margin-bottom: 5px; }
+        
+        /* Cards */
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
+        .info-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 20px; line-height: 1.6; }
+        .card-label { font-size: 0.7em; text-transform: uppercase; color: var(--aurora-b); letter-spacing: 1px; margin-bottom: 8px; display: block; }
+        .card-wide { grid-column: 1 / -1; border-top: 2px solid var(--aurora-g); }
+
+        /* Map & Weather */
+        .map-container { width: 100%; height: 250px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); margin-top: 10px; }
+        .weather-strip { background: rgba(79,172,254,0.1); padding: 15px; border-radius: 12px; display: flex; align-items: center; gap: 15px; }
+
+        /* Responsive - Mobile Only */
+        @media (max-width: 860px) {
+            .main-container { flex-direction: column; }
+            .sidebar { 
+                width: 100%; height: 85px; flex-direction: row; 
+                overflow-x: auto; overflow-y: hidden; 
+                white-space: nowrap; border-left: none; border-bottom: 1px solid var(--border);
+                padding: 10px; scroll-snap-type: x proximity;
+            }
+            .day-btn { 
+                flex-direction: column; min-width: 80px; padding: 8px; 
+                border-right: none; border-bottom: 3px solid transparent; 
+                scroll-snap-align: center;
+            }
+            .day-btn.active { border-bottom-color: var(--aurora-g); border-right-color: transparent; }
+            .day-info { display: none; } /* במובייל רואים רק מספר ותאריך קטן */
+            .day-btn::after { content: attr(data-date); font-size: 0.6em; color: var(--muted); margin-top: 4px; }
+            .content { padding: 15px; }
+            .day-main-title { font-size: 1.5em; }
+        }
     </style>
 </head>
 <body>
-    <div class="bg-layer-flag"></div>
-    <div class="bg-layer-wave"></div>
-    <div class="bg-layer-noise"></div>
-    <canvas id="confetti-canvas"></canvas>
-    <div class="complete-toast" id="complete-toast">🎉 כל הימים הושלמו — המסע מחכה לכם!</div>
-    
-    <div class="modal-overlay" id="gear-modal" role="dialog" aria-modal="true">
-        <div class="modal-box">
-            <div class="modal-header">
-                <div class="modal-title">🎒 כל הציוד למסע</div>
-                <button class="modal-close" id="gear-modal-close">✕</button>
-            </div>
-            <div class="modal-gear-list" id="gear-modal-list"></div>
+
+    <header>
+        <div class="header-brand">
+            <span style="font-size: 1.5em;">🇳🇴</span>
+            <span class="brand-title">נורווגיה 2026</span>
         </div>
+        <div class="header-budget">
+            <div id="budget-nok-total" class="budget-val">—</div>
+            <div id="budget-ils-total" style="font-size: 0.7em; color: var(--muted);"></div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <nav class="sidebar" id="sidebar"></nav>
+        <main class="content" id="content">
+            <div class="empty-state">טוען מסע...</div>
+        </main>
     </div>
-    
-    <div class="shell">
-        <header>
-            <div class="header-brand">
-                <span class="brand-flag">🇳🇴</span>
-                <div class="brand-text">
-                    <span class="brand-title">נורווגיה 2026</span>
-                    <span class="brand-sub">המסע המשפחתי המעודכן</span>
-                </div>
-            </div>
-            <div class="header-budget" id="header-budget">
-                <div class="header-budget-label">תקציב כולל</div>
-                <div class="header-budget-value" id="budget-nok-total">—</div>
-                <div class="header-budget-ils" id="budget-ils-total"></div>
-            </div>
-            <div class="header-right">
-                <button class="icon-btn" id="theme-toggle">🌙</button>
-                <div class="progress-wrap">
-                    <div class="progress-bar-outer"><div class="progress-bar-inner" id="progress-bar"></div></div>
-                    <span class="progress-pct" id="progress-pct">0%</span>
-                </div>
-            </div>
-        </header>
-        
-        <div class="countdown-strip" id="countdown-strip">
-            <span class="countdown-label" id="countdown-label">יוצאים לדרך בעוד</span>
-            <div class="cd-block"><span class="cd-num" id="cd-days">—</span> ימים</div>
-        </div>
-        
-        <div class="main-container">
-            <nav class="sidebar" id="sidebar"></nav>
-            <main class="content" id="content">
-                <div class="empty-state"><p>טוען מסלול...</p></div>
-            </main>
-        </div>
-    </div>
-    
+
     <script>
         const trip = [
-            { id:1, date:"12/08", lat:59.91, lon:10.75, stay:"אוסלו (Barcode)", title:"נחיתה והתאקלמות", flight:"ישראייר 227 | נחיתה באוסלו", km: 50,
-              drive:"נחיתה בשדה Gardermoen ונסיעה למרכז אוסלו. הגעה לדירה ברחוב Rostockgata 82 באזור ה-Barcode החדשני.",
-              main:"סיור ערב בנמל ה-Barcode וגג בית האופרה של אוסלו.",
-              kids:"טיול על גג האופרה המשופע - חוויה אדירה לבנות לרוץ עליו.",
-              restaurant: { name: "Mamma Pizza", desc: "פיצרייה מעולה סמוך לאופרה.", source: "Gmail Booking" },
-              imgD:"Oslo Barcode", imgM:"Oslo Opera House", imgK:"Oslo kids", gear:["דרכונים", "כרטיסי Flytoget"], map:"Rostockgata 82, Oslo",
-              costs:[ {icon:"🚆", name:"רכבת מהשדה", amount:"230 NOK", per:"מבוגר"} ], totalNok: 460 },
-
-            { id:2, date:"13/08", lat:59.91, lon:10.75, stay:"אוסלו", title:"אטרקציות אוסלו", km: 0,
-              drive:"יום עירוני נטול רכב. שימוש ב-Ruter (תחבורה ציבורית).",
-              main:"פארק הפסלים Vigeland ומוזיאון Fram של ספינות הקוטב.",
-              kids:"מוזיאון Fram - הבנות יכולות לעלות לסיפון הספינה המקורית.",
-              restaurant: { name: "Mathallen Oslo", desc: "שוק אוכל איכותי.", source: "Visit Oslo" },
-              imgD:"Vigeland Park", imgM:"Fram Museum", imgK:"Oslo ferry", gear:["כרטיס יומי Ruter", "נעלי הליכה"], map:"Vigeland Park, Oslo",
-              costs:[ {icon:"🎟️", name:"כרטיס יומי", amount:"121 NOK", per:"מבוגר"} ], totalNok: 242 },
-
-            { id:3, date:"14/08", lat:60.39, lon:5.32, stay:"ברגן (Bergen)", title:"הרכבת לברגן", km: 480,
-              drive:"אחת הנסיעות היפות בעולם (Bergensbanen). חוצה את רמת הארדנגרווידה בגובה 1200 מטר.",
-              main:"נסיעה נופית ברכבת. שימו לב לשינויי הנוף הדרמטיים מהחלון.",
-              kids:"קרון המשפחה ברכבת - חפשו את אזור המשחקים.",
-              restaurant: { name: "Fisketorget", desc: "שוק הדגים של ברגן.", source: "Local" },
-              imgD:"Bergensbanen", imgM:"Finse station", imgK:"Train kids", gear:["נשנושים לנסיעה", "טאבלטים"], map:"Bergen Station",
-              costs:[ {icon:"🚂", name:"כרטיס רכבת", amount:"~800 NOK", per:"מבוגר"} ], totalNok: 1600 },
-
-            { id:4, date:"15/08", lat:60.39, lon:5.32, stay:"ברגן (Bergen)", title:"נמל בריגן והר פלויין", km: 10,
-              drive:"איסוף הרכב השכור בברגן. נסיעה קצרה לנמל.",
-              main:"נמל Bryggen ההיסטורי ועלייה בפוניקולר להר Fløyen.",
-              kids:"יער הטרולים בפסגה - מסלול קסום עם פסלים וגן שעשועים.",
-              restaurant: { name: "Bryggeloftet", desc: "אוכל נורווגי קלאסי.", source: "Visit Bergen" },
-              imgD:"Bryggen Bergen", imgM:"Fløibanen", imgK:"Troll Forest", gear:["מטריה", "ז'קט קל"], map:"Fløibanen",
-              costs:[ {icon:"🚡", name:"פוניקולר", amount:"220 NOK", per:"מבוגר"} ], totalNok: 440 },
-
-            { id:5, date:"16/08", lat:60.63, lon:6.42, stay:"ווס (Voss)", title:"הדרך לווס ותצפית Stegastein", km: 140,
-              drive:"נסיעה על E16. חובה: עלייה לתצפית Stegastein מעל Aurland - מרפסת עץ שתלויה 650 מטר מעל הפיורד.",
-              main:"תצפית Stegastein המרהיבה.",
-              kids:"צילום משפחתי 'על הגובה' בסוף המרפסת.",
-              restaurant: { name: "Tre Brør", desc: "קפה נהדר במרכז ווס.", source: "TripAdvisor" },
-              imgD:"Stegastein View", imgM:"Voss nature", imgK:"Stegastein kids", gear:["מצלמה", "נעלי נהיגה"], map:"Stegastein",
-              costs:[ {icon:"🚗", name:"אגרות", amount:"100 NOK", per:"יום"} ], totalNok: 100 },
-
-            { id:6, date:"17/08", lat:60.86, lon:7.11, stay:"ווס (Voss)", title:"יום פלאם (Flåm)", km: 120,
-              drive:"נסיעה לווס וחציית מנהרות Gudvanga. מומלץ לעצור ב-Stalheim לתצפית.",
-              main:"רכבת פלאם (Flåmsbana). נחשבת לאחת היפות בעולם.",
-              kids:"מפל Kjosfossen - היציאה מהרכבת ליד המפל המרשים.",
-              restaurant: { name: "Ægir BrewPub", desc: "מסעדה ויקינגית.", source: "White Guide" },
-              imgD:"Gudvangen", imgM:"Flåmsbana", imgK:"Kjosfossen", gear:["כרטיסי רכבת פלאם", "מעיל"], map:"Flåm Station",
-              costs:[ {icon:"🚂", name:"רכבת פלאם", amount:"850 NOK", per:"מבוגר"} ], totalNok: 1700 },
-
-            { id:7, date:"18/08", lat:61.83, lon:6.81, stay:"אולדן (Fremsteteigen)", title:"צפונה לארץ הקרחונים", km: 210,
-              drive:"נסיעה לאולדן. מעבר במנהרת Fjærland - שימו לב לקרחון Bøyabreen שצץ מימין מיד ביציאה מהמנהרה.",
-              main:"התמקמות בבקתה של Ketil Finsås ב-Fremsteteigen.",
-              kids:"משחקים בחצר הבקתה מול הפיורד השקט.",
-              restaurant: { name: "Sjøstova", desc: "מסעדת פירות ים באולדן.", source: "Local" },
-              imgD:"Bøyabreen", imgM:"Olden Fjord", imgK:"Olden nature", gear:["בגדים חמים", "מצרכים לבישול"], map:"Fremsteteigen, Olden",
-              costs:[ {icon:"⛴️", name:"מעבורת Vangsnes", amount:"300 NOK", per:"רכב"} ], totalNok: 300 },
-
-            { id:8, date:"19/08", lat:61.66, lon:6.81, stay:"אולדן", title:"קרחון בריקסדל", km: 40,
-              drive:"נסיעה לאורך אגם Oldevatnet - המים בצבע טורקיז חלבי מדהים.",
-              main:"קרחון Briksdalsbreen. נסיעה ברכבי ה'טרול' (Troll Cars) עד הקרחון.",
-              kids:"נסיעה ברכב הבאגי הפתוח - חוויה כיפית מאוד לבנות.",
-              restaurant: { name: "Briksdal Fjellstove", desc: "מסעדה למרגלות הקרחון.", source: "Local" },
-              imgD:"Oldevatnet", imgM:"Briksdalsbreen", imgK:"Troll Car", gear:["משקפי שמש", "מעיל רוח"], map:"Briksdalsbreen",
-              costs:[ {icon:"🚙", name:"רכב טרול", amount:"300 NOK", per:"מבוגר"} ], totalNok: 600 },
-
-            { id:9, date:"20/08", lat:62.14, lon:6.07, stay:"וולדה (Hamnegata)", title:"הגעה לוולדה", km: 110,
-              drive:"נסיעה לאורך Hornindalsvatnet, האגם העמוק באירופה. הגעה ל-Sjøbuda בוולדה (Hamnegata 8).",
-              main:"התמקמות בדירה של Silje על קו המים.",
-              kids:"חיפוש ספינות נכנסות לנמל וולדה מהחלון.",
-              restaurant: { name: "Tredet", desc: "מקום מפגש מקומי נהדר.", source: "Volda Guide" },
-              imgD:"Hornindalsvatnet", imgM:"Volda Waterfront", imgK:"Volda harbor", gear:["נעלי בית", "מצרכים לארוחת ערב"], map:"Hamnegata 8, Volda",
-              costs:[ {icon:"🚗", name:"אגרות כביש", amount:"50 NOK", per:"יום"} ], totalNok: 50 },
-
-            { id:10, date:"21/08", lat:62.10, lon:7.20, stay:"וולדה", title:"גייראנגר - שיא הטיול", km: 160,
-              drive:"נסיעה לגייראנגר. כדאי לקחת את המעבורת התיירותית מ-Hellesylt ששטה לתוך הפיורד.",
-              main:"שייט בפיורד Geirangerfjord מול מפלי 'שבע האחיות'.",
-              kids:"ספירת המפלים מהספינה - מי תמצא ראשונה את כל השבע?",
-              restaurant: { name: "Brasserie Posten", desc: "בסניף דואר ישן.", source: "White Guide" },
-              imgD:"Seven Sisters", imgM:"Geiranger Boat", imgK:"Geiranger kids", gear:["בגדים אטומים למים", "משקפת"], map:"Geirangerfjord",
-              costs:[ {icon:"⛴️", name:"מעבורת תיירותית", amount:"600 NOK", per:"מבוגר"} ], totalNok: 1200 },
-
-            { id:11, date:"22/08", lat:62.47, lon:6.15, stay:"וולדה", title:"אולסונד והאקווריום", km: 140,
-              drive:"נסיעה לעיר האר-נובו היפה. תצפית מהר Aksla על כל האיים.",
-              main:"האקווריום Atlanterhavsparken. מופע האכלה מפורסם.",
-              kids:"האכלת פינגווינים וכלבי ים - נקודת שיא לבנות.",
-              restaurant: { name: "XL Diner", desc: "מומחית לקליפפיסק.", source: "Fjord Norway" },
-              imgD:"Alesund View", imgM:"Atlantic Aquarium", imgK:"Penguin feed", gear:["גרביים להחלפה", "מצלמה"], map:"Atlanterhavsparken",
-              costs:[ {icon:"🎟️", name:"אקווריום", amount:"250 NOK", per:"מבוגר"} ], totalNok: 500 },
-
-            { id:12, date:"23/08", lat:62.14, lon:6.07, stay:"וולדה", title:"יום ראשון רגוע", km: 0,
-              drive:"יום מנוחה בוולדה. שימו לב: הסופרים סגורים בימי ראשון!",
-              main:"טיול נינוח סביב אגם Røtevatnet מעל העיירה.",
-              kids:"משחקים בגן השעשועים וזמן יצירה בדירה.",
-              restaurant: { name: "Home Cooking", desc: "ארוחה ביתית (להצטייד בשבת).", source: "Tip" },
-              imgD:"Rotevatnet", imgM:"Volda Church", imgK:"Kids playing", gear:["רשימת אריזה"], map:"Volda",
-              costs:[ {icon:"🍦", name:"פינוקים", amount:"100 NOK", per:"משפחה"} ], totalNok: 100 },
-
-            { id:13, date:"24/08", lat:62.14, lon:6.07, stay:"וולדה", title:"טבע מקומי בוולדה", km: 20,
-              drive:"סיור בסביבה הקרובה של הפיורד. נסיעה קצרה לאזורי הליכה.",
-              main:"איסוף אוכמניות ביערות סביב וולדה (סוף העונה).",
-              kids:"תחרות איסוף אוכמניות - למי יהיו ידיים סגולות יותר?",
-              restaurant: { name: "Naustet Marina", desc: "על המים.", source: "Local" },
-              imgD:"Blueberries", imgM:"Hiking Volda", imgK:"Kids hike", gear:["קופסאות לאוכמניות", "בקבוק מים"], map:"Volda",
-              costs:[ {icon:"☕", name:"קפה ומאפה", amount:"150 NOK", per:"משפחה"} ], totalNok: 150 },
-
-            { id:14, date:"25/08", lat:60.39, lon:5.32, stay:"טיסה חזרה", title:"חזרה לברגן ופרידה", km: 280,
-              drive:"הדרך הארוכה דרומה על כביש E39. החזרת הרכב בשדה בברגן (Flesland).",
-              main:"מעבורת Lavik-Oppedal - נפרדים מהפיורד מהסיפון.",
-              kids:"סיכום הטיול וצפייה בתמונות במטוס.",
-              restaurant: { name: "Airport", desc: "ארוחה לפני המראה.", source: "Travel" },
-              imgD:"E39 Road", imgM:"Lavik Ferry", imgK:"Airport kids", gear:["דרכונים", "כרטיסי טיסה"], map:"Bergen Airport",
-              costs:[ {icon:"⛽", name:"דלק אחרון", amount:"~800 NOK", per:"מיכל"} ], totalNok: 800 }
+            { id:1, date:"12/08", stay:"אוסלו", title:"נחיתה באוסלו", km: 50,
+              drive:"נחיתה ב-Gardermoen והגעה לדירת ה-Airbnb ב-Rostockgata 82 (אזור ה-Barcode).",
+              main:"גג בית האופרה וטיול לאורך קו המים המודרני.",
+              kids:"ריצה על גג האופרה המשופע וביקור בספריית Deichman.",
+              map:"Rostockgata 82, Oslo", cost: 460 },
+            { id:2, date:"13/08", stay:"אוסלו", title:"פארק ויגילנד ומוזיאון פראם", km: 0,
+              drive:"שימוש בתחבורה ציבורית (חשמלית ומעבורת עירונית).",
+              main:"פארק הפסלים Vigeland ומוזיאון ספינות הקוטב Fram.",
+              kids:"טיפוס על הספינה המקורית במוזיאון Fram.",
+              map:"Vigeland Park, Oslo", cost: 242 },
+            { id:3, date:"14/08", stay:"ברגן", title:"הרכבת לברגן", km: 480,
+              drive:"נסיעה ברכבת ה-Bergensbanen מאוסלו לברגן (כ-7 שעות).",
+              main:"נופי רמת הארדנגרווידה המדהימים מהחלון.",
+              kids:"קרון המשפחה (Familie) ברכבת עם אזור המשחקים.",
+              map:"Bergen Station", cost: 1600 },
+            { id:4, date:"15/08", stay:"ברגן", title:"בריגן והר פלויין", km: 10,
+              drive:"איסוף רכב שכור בברגן וסיור בנמל ההיסטורי.",
+              main:"עלייה בפוניקולר לתצפית מהר Fløyen.",
+              kids:"יער הטרולים וגן השעשועים בפסגת ההר.",
+              map:"Fløibanen", cost: 440 },
+            { id:5, date:"16/08", stay:"ווס", title:"תצפית Stegastein", km: 140,
+              drive:"נסיעה מווס דרך Aurland לעבר תצפית Stegastein המרהיבה.",
+              main:"מרפסת התצפית התלויה 650 מטר מעל הפיורד.",
+              kids:"מבט דרך הזכוכית בקצה המרפסת.",
+              map:"Stegastein Viewpoint", cost: 100 },
+            { id:6, date:"17/08", stay:"ווס", title:"רכבת פלאם", km: 120,
+              drive:"נסיעה לפלאם וחזרה לווס.",
+              main:"שייט/רכבת פלאם (Flåmsbana).",
+              kids:"מפל Kjosfossen המרשים.",
+              map:"Flåm", cost: 1700 },
+            { id:7, date:"18/08", stay:"אולדן", title:"בקתת Fremsteteigen", km: 210,
+              drive:"נסיעה צפונה. שימו לב לקרחון Bøyabreen שצץ מימין ביציאה ממנהרת Fjærland.",
+              main:"התמקמות בבקתת ה-Airbnb של Ketil באולדן.",
+              kids:"משחקים בטבע סביב הבקתה מול הפיורד.",
+              map:"Fremsteteigen, Olden", cost: 300 },
+            { id:8, date:"19/08", stay:"אולדן", title:"קרחון בריקסדל", km: 40,
+              drive:"נסיעה לאורך אגם Oldevatnet הטורקיזי.",
+              main:"קרחון Briksdal ונסיעה ברכבי ה'טרול'.",
+              kids:"הנסיעה הקופצנית ברכבי הבאגי לקרחון.",
+              map:"Briksdalsbreen", cost: 600 },
+            { id:9, date:"20/08", stay:"וולדה", title:"הדירה על המים", km: 110,
+              drive:"נסיעה לוולדה והתמקמות ב-Sjøbuda (Hamnegata 8).",
+              main:"דירה מרהיבה על קו המים של הפיורד.",
+              kids:"צפייה בסירות ישירות מחלון הסלון.",
+              map:"Hamnegata 8, Volda", cost: 50 },
+            { id:10, date:"21/08", stay:"וולדה", title:"פיורד גייראנגר", km: 160,
+              drive:"נסיעה להלסילט (Hellesylt) ולקיחת מעבורת תיירותית.",
+              main:"שייט בפיורד גייראנגר מול 'שבע האחיות'.",
+              kids:"לספור את המפלים ולחפש את 'המחזר'.",
+              map:"Geirangerfjord", cost: 1200 },
+            { id:11, date:"22/08", stay:"וולדה", title:"אקווריום אולסונד", km: 140,
+              drive:"נסיעה לעיר האר-נובו אולסונד.",
+              main:"האקווריום האטלנטי Atlanterhavsparken.",
+              kids:"האכלת פינגווינים וכלבי ים.",
+              map:"Atlanterhavsparken", cost: 500 },
+            { id:12, date:"23/08", stay:"וולדה", title:"יום ראשון רגוע", km: 0,
+              drive:"מנוחה בוולדה (שימו לב: הסופרים סגורים!).",
+              main:"טיול לאגם Røtevatnet מעל העיירה.",
+              kids:"איסוף אוכמניות ומשחקים מקומיים.",
+              map:"Volda", cost: 100 },
+            { id:13, date:"24/08", stay:"וולדה", title:"טבע ונוף מקומי", km: 30,
+              drive:"נסיעה קצרה לתצפיות סביב וולדה.",
+              main:"סיכום הטיול בטבע הנורווגי.",
+              kids:"זמן חופשי ומשחקים.",
+              map:"Volda", cost: 150 },
+            { id:14, date:"25/08", stay:"חזרה", title:"נסיעה לברגן וטיסה", km: 280,
+              drive:"נסיעה ארוכה דרומה על ה-E39 לשדה התעופה בברגן.",
+              main:"פרידה מהפיורדים דרך המעבורות בדרך.",
+              kids:"צפייה בתמונות וסיכומים במטוס.",
+              map:"Bergen Airport", cost: 800 }
         ];
-
-        // לוגיקה טכנית (Weather, Sidebar, Storage) נשמרת מהקוד המקורי שלך
-        let currentExchangeRate = 0.34;
-        const storageKey = id => `norway26-day-${id}`;
-
-        function updateBudgetHeader() {
-            const totalNok = trip.reduce((s, d) => s + (d.totalNok || 0), 0);
-            const totalIls = Math.round(totalNok * currentExchangeRate);
-            document.getElementById('budget-nok-total').textContent = totalNok.toLocaleString() + ' NOK';
-            document.getElementById('budget-ils-total').textContent = '≈ ₪' + totalIls.toLocaleString();
-        }
 
         function renderSidebar() {
             const sidebar = document.getElementById('sidebar');
-            sidebar.innerHTML = '<span class="sidebar-label">14 ימים · אוגוסט 2026</span>';
+            sidebar.innerHTML = '';
             trip.forEach(day => {
                 const btn = document.createElement('button');
                 btn.className = 'day-btn';
                 btn.id = 'btn-' + day.id;
+                btn.setAttribute('data-date', day.date);
                 btn.innerHTML = `
-                    <div class="day-num-badge">${day.id}</div>
+                    <div class="day-num">${day.id}</div>
                     <div class="day-info">
-                        <div class="day-date">${day.date}</div>
-                        <div class="day-title-text">${day.title}</div>
+                        <div style="font-size: 0.7em; opacity: 0.6;">${day.date}</div>
+                        <div style="font-size: 0.85em; font-weight: 700;">${day.title}</div>
                     </div>
                 `;
-                btn.onclick = () => loadDay(day.id);
+                btn.onclick = () => {
+                    loadDay(day.id);
+                    if (window.innerWidth <= 860) {
+                        btn.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+                    }
+                };
                 sidebar.appendChild(btn);
             });
         }
@@ -308,49 +191,51 @@
         function loadDay(id) {
             const d = trip.find(x => x.id === id);
             const content = document.getElementById('content');
-            
-            // עדכון המפות עם התיקון שהצעתי
-            const encodedMap = encodeURIComponent(d.map);
-            const mapEmbedUrl = `https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${encodedMap}`; // כאן השתמש ב-URL המתוקן מהקוד המקורי שלך
-            const realEmbedUrl = `https://maps.google.com/maps?q=${encodedMap}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
+            const mapUrl = `https://maps.google.com/maps?q=${encodeURIComponent(d.map)}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
 
-            let html = `
-                <div class="day-header fade-up">
-                    <h2 class="day-main-title">${d.id}. ${d.title}</h2>
-                    <div class="tags-row">
-                        <span class="tag tag-stay">🏠 ${d.stay}</span>
-                        <span class="tag tag-drive">🚗 ${d.km} ק״מ</span>
-                    </div>
+            content.innerHTML = `
+                <div class="day-header">
+                    <div style="font-size: 0.8em; color: var(--aurora-g); font-weight: 700;">${d.date}</div>
+                    <h2 class="day-main-title">${d.title}</h2>
+                    <div style="color: var(--muted); margin-bottom: 20px;">🏠 לינה: ${d.stay}</div>
                 </div>
+
                 <div class="cards-grid">
                     <div class="info-card">
-                        <div class="card-text"><strong>יומן דרכים:</strong> ${d.drive}</div>
+                        <span class="card-label">🚗 נסיעה (${d.km} ק״מ)</span>
+                        <p>${d.drive}</p>
                     </div>
                     <div class="info-card">
-                        <div class="card-text"><strong>אטרקציה:</strong> ${d.main}</div>
+                        <span class="card-label">🎯 אטרקציה מרכזית</span>
+                        <p>${d.main}</p>
                     </div>
                     <div class="info-card card-wide">
-                        <div class="card-text"><strong>בנות (4 ו-8):</strong> ${d.kids}</div>
+                        <span class="card-label">✨ דגש לבנות (4 ו-8)</span>
+                        <p>${d.kids}</p>
                     </div>
                 </div>
-                <div class="cost-card">
-                    <div class="card-text">💰 <strong>עלויות:</strong> ${d.totalNok} NOK</div>
-                </div>
-                <div class="map-card" style="height:300px; border-radius:16px; overflow:hidden;">
-                    <iframe width="100%" height="100%" frameborder="0" src="${realEmbedUrl}"></iframe>
+
+                <div class="map-container">
+                    <iframe width="100%" height="100%" frameborder="0" src="${mapUrl}"></iframe>
                 </div>
             `;
-            content.innerHTML = html;
+
             document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-'+id).classList.add('active');
+            document.getElementById('btn-' + id).classList.add('active');
+            content.scrollTo(0,0);
         }
 
-        // איתחול
+        function updateBudget() {
+            const totalNok = trip.reduce((sum, day) => sum + day.cost, 0);
+            document.getElementById('budget-nok-total').textContent = totalNok.toLocaleString() + ' NOK';
+            document.getElementById('budget-ils-total').textContent = '≈ ₪' + Math.round(totalNok * 0.34).toLocaleString();
+        }
+
         window.onload = () => {
             renderSidebar();
             loadDay(1);
-            updateBudgetHeader();
-        }
+            updateBudget();
+        };
     </script>
 </body>
 </html>
