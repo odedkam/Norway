@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>נורווגיה 2026 — המסע המשפחתי</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* === שחזור מלא של משתני העיצוב המקוריים === */
+        /* === שחזור מלא של כל משתני העיצוב המקוריים === */
         :root {
             --fjord: #0a1628; --deep: #0d1f3c; --midnight: #112244;
             --glacier: #a8d8ea; --ice: #dff0f7;
@@ -32,60 +35,65 @@
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html, body { height: 100%; height: 100dvh; overflow: hidden; font-family: 'Heebo', sans-serif; background-color: var(--fjord); color: var(--white); }
 
-        .shell { position: relative; z-index: 10; display: flex; flex-direction: column; height: 100%; }
-        header { display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 68px; flex-shrink: 0; border-bottom: 1px solid var(--border); background: rgba(10,22,40,0.6); backdrop-filter: blur(12px); position: relative; }
+        .shell { position: relative; z-index: 10; display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
+        header { display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 68px; flex-shrink: 0; border-bottom: 1px solid var(--border); background: rgba(10,22,40,0.6); backdrop-filter: blur(12px); z-index: 100; }
 
-        .main-container { display: flex; flex: 1; overflow: hidden; }
+        .main-container { display: flex; flex: 1; overflow: hidden; position: relative; }
 
-        /* Sidebar - Desktop & Mobile */
-        .sidebar { 
-            width: var(--sidebar-w); flex-shrink: 0; overflow-y: auto; 
-            border-left: 1px solid var(--border); background: rgba(7,18,33,0.5); 
-            padding: 12px 0; -webkit-overflow-scrolling: touch;
-        }
-
-        /* Content Area - Crucial Scroll Fix */
-        .content { 
-            flex: 1; overflow-y: auto; padding: 28px 32px; 
-            display: flex; flex-direction: column; gap: 20px; 
-            -webkit-overflow-scrolling: touch; 
-        }
-
-        /* Elements from original code */
-        .day-btn { display: flex; align-items: center; gap: 12px; padding: 12px 20px; cursor: pointer; border: none; background: transparent; color: inherit; border-right: 3px solid transparent; width: 100%; text-align: right; }
+        /* Sidebar & Sidebar Buttons */
+        .sidebar { width: var(--sidebar-w); flex-shrink: 0; overflow-y: auto; border-left: 1px solid var(--border); background: rgba(7,18,33,0.5); padding: 12px 0; z-index: 50; }
+        .day-btn { display: flex; align-items: center; gap: 12px; padding: 12px 20px; cursor: pointer; border: none; background: transparent; color: inherit; border-right: 3px solid transparent; width: 100%; text-align: right; transition: 0.2s; }
         .day-btn.active { background: rgba(0,201,167,0.1); border-right-color: var(--aurora-g); }
-        .day-btn.done .day-num-badge::after { content: '✓'; position: absolute; inset: 0; background: var(--aurora-g); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--fjord); font-size: 0.7em; }
+        .day-btn.done .day-num-badge::after { content: '✓'; position: absolute; inset: 0; background: var(--aurora-g); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--fjord); font-size: 0.8em; font-weight: 700; }
         .day-num-badge { width: 34px; height: 34px; border-radius: 50%; background: rgba(168,216,234,0.1); border: 1px solid rgba(168,216,234,0.2); position: relative; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 
+        /* --- Content Area: FIXED SCROLLING --- */
+        .content { 
+            flex: 1; overflow-y: auto; padding: 28px 32px; 
+            display: flex; flex-direction: column; gap: 24px; 
+            -webkit-overflow-scrolling: touch; 
+            height: 100%;
+        }
+
+        /* Original Components */
         .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .info-card { background: var(--card-bg); border: var(--card-border-glow); border-radius: 16px; overflow: hidden; padding-bottom: 15px; }
-        .card-header { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--border); }
-        .card-img { width: 100%; height: 170px; background: #112244; position: relative; overflow: hidden; }
-        .card-text { padding: 16px 18px; font-size: 0.9em; line-height: 1.6; }
+        .info-card { background: var(--card-bg); border: var(--card-border-glow); border-radius: 16px; overflow: hidden; transition: 0.3s; box-shadow: var(--box-shadow); }
+        .card-wide { grid-column: 1 / -1; }
+        .card-header { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.03); }
+        .card-text { padding: 16px 18px; font-size: 0.9em; line-height: 1.7; }
 
+        .restaurant-card { background: rgba(255,154,118,0.06); border: 1px solid rgba(255,154,118,0.25); border-radius: 16px; padding: 18px 20px; display: flex; gap: 16px; }
         .weather-card { background: rgba(79,172,254,0.06); border: 1px solid rgba(79,172,254,0.22); border-radius: 16px; padding: 20px; }
-        .check-card { display: flex; align-items: center; gap: 14px; padding: 14px 20px; background: rgba(0,201,167,0.06); border-radius: 12px; cursor: pointer; margin-top: 10px; }
+        .check-card { display: flex; align-items: center; gap: 14px; padding: 14px 20px; background: rgba(0,201,167,0.08); border: 1px solid var(--aurora-g); border-radius: 12px; cursor: pointer; width: fit-content; }
 
-        .notes-textarea { width: 100%; min-height: 90px; background: rgba(255,255,255,0.04); border: 1px solid var(--gold); border-radius: 10px; padding: 12px; color: white; resize: vertical; }
+        .notes-textarea { width: 100%; min-height: 100px; background: rgba(255,255,255,0.04); border: 1px solid var(--gold); border-radius: 10px; padding: 12px; color: white; font-family: inherit; }
 
-        /* Countdown Strip */
-        .countdown-strip { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 8px; background: rgba(0,201,167,0.05); border-bottom: 1px solid var(--border); font-size: 0.85em; }
+        /* Countdown & Progress */
+        .countdown-strip { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 8px; background: rgba(0,201,167,0.06); border-bottom: 1px solid var(--border); font-size: 0.85em; flex-shrink: 0; }
+        .progress-bar-outer { width: 100px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; position: relative; }
+        .progress-bar-inner { height: 100%; background: var(--aurora-g); border-radius: 3px; transition: 0.6s; width: 0%; box-shadow: 0 0 10px var(--aurora-g); }
 
-        /* Modals */
-        .modal-overlay { position: fixed; inset: 0; z-index: 500; background: rgba(5,12,25,0.85); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; }
+        /* Modals & Confetti */
+        .modal-overlay { position: fixed; inset: 0; z-index: 500; background: rgba(5,12,25,0.9); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; }
         .modal-overlay.open { display: flex; }
-        .modal-box { background: #0d1f3c; border: 1px solid var(--border); border-radius: 20px; padding: 28px; width: 90%; max-width: 500px; }
-
+        .modal-box { background: var(--deep); border: 1px solid var(--border); border-radius: 20px; padding: 28px; width: 90%; max-width: 500px; max-height: 80vh; overflow-y: auto; }
         #confetti-canvas { position: fixed; inset: 0; z-index: 600; pointer-events: none; display: none; }
 
+        /* === MOBILE RESPONSIVE FIXES === */
         @media (max-width: 860px) {
             .main-container { flex-direction: column; }
-            .sidebar { width: 100%; height: 90px; flex-direction: row; overflow-x: auto; overflow-y: hidden; border-left: none; border-bottom: 1px solid var(--border); padding: 10px; }
-            .day-btn { flex-direction: column; min-width: 80px; text-align: center; border-right: none; border-bottom: 3px solid transparent; }
+            .sidebar { 
+                width: 100%; height: 95px; flex-direction: row; 
+                overflow-x: auto; overflow-y: hidden; 
+                border-left: none; border-bottom: 1px solid var(--border);
+                padding: 10px; white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            .day-btn { flex-direction: column; min-width: 85px; padding: 8px; border-right: none; border-bottom: 3px solid transparent; text-align: center; }
             .day-btn.active { border-bottom-color: var(--aurora-g); }
             .day-info { display: none; }
             .cards-grid { grid-template-columns: 1fr; }
-            .content { padding: 16px; }
+            .content { padding: 20px 16px; height: calc(100vh - 68px - 95px - 35px); } /* Adjust for header, sidebar, countdown */
         }
     </style>
 </head>
@@ -94,70 +102,135 @@
     
     <div class="modal-overlay" id="gear-modal">
         <div class="modal-box">
-            <h3 style="margin-bottom:15px;">🎒 רשימת ציוד</h3>
-            <div id="gear-list-full"></div>
-            <button onclick="toggleModal('gear-modal')" style="margin-top:20px; padding:8px 16px;">סגור</button>
+            <h3 style="margin-bottom:15px; font-family:'Playfair Display';">🎒 רשימת ציוד למסע</h3>
+            <div id="gear-list-container"></div>
+            <button onclick="toggleModal('gear-modal')" style="margin-top:20px; padding:10px 20px; border-radius:8px; border:none; background:var(--aurora-b); color:white; cursor:pointer;">סגור</button>
         </div>
     </div>
 
     <div class="shell">
         <header>
             <div class="header-brand">
-                <span style="font-size: 1.5em;">🇳🇴</span>
+                <span style="font-size: 1.6em;">🇳🇴</span>
                 <div class="brand-text">
-                    <span class="brand-title">נורווגיה 2026</span>
+                    <span class="brand-title" style="font-weight:900;">נורווגיה 2026</span>
                 </div>
             </div>
-            <div class="header-right" style="display:flex; gap:10px;">
-                <button class="icon-btn" onclick="toggleModal('gear-modal')">🎒</button>
-                <button class="icon-btn" id="theme-toggle">🌙</button>
-                <div class="progress-wrap" style="display:flex; align-items:center; gap:5px;">
-                    <div style="width:60px; height:6px; background:rgba(255,255,255,0.1); border-radius:3px;">
-                        <div id="progress-bar" style="width:0%; height:100%; background:var(--aurora-g); border-radius:3px; transition:0.3s;"></div>
-                    </div>
-                    <span id="progress-pct" style="font-size:0.75em;">0%</span>
+            <div class="header-right" style="display:flex; align-items:center; gap:12px;">
+                <button onclick="toggleModal('gear-modal')" style="background:none; border:none; cursor:pointer; font-size:1.4em;">🎒</button>
+                <div class="progress-wrap" style="display:flex; flex-direction:column; align-items:flex-end;">
+                    <div class="progress-bar-outer"><div class="progress-bar-inner" id="progress-bar"></div></div>
+                    <span id="progress-pct" style="font-size:0.7em; margin-top:4px; color:var(--aurora-g);">0%</span>
                 </div>
+                <button id="theme-toggle" style="background:none; border:none; cursor:pointer; font-size:1.2em;">🌙</button>
             </div>
         </header>
 
-        <div class="countdown-strip" id="countdown-strip">
+        <div class="countdown-strip">
             <span>יוצאים לדרך בעוד:</span>
-            <span id="cd-days" style="font-weight:900; color:var(--aurora-g);">--</span> ימים
+            <span id="cd-days" style="font-weight:900; color:var(--aurora-g); font-size:1.2em;">--</span>
+            <span>ימים</span>
         </div>
 
         <div class="main-container">
             <nav class="sidebar" id="sidebar"></nav>
             <main class="content" id="content">
-                <div class="empty-state">טוען...</div>
+                <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; opacity:0.3;">
+                    <span style="font-size:4em;">🇳🇴</span>
+                    <p>טוען מסלול...</p>
+                </div>
             </main>
         </div>
     </div>
 
     <script>
-        // === שחזור מלא של הלוגיקה והמערך המעודכן ===
-        const StorageHelper = {
-            get: (key) => localStorage.getItem(key),
-            set: (key, val) => localStorage.setItem(key, val),
-            remove: (key) => localStorage.removeItem(key)
+        const Storage = {
+            get: (k) => localStorage.getItem('norway_'+k),
+            set: (k, v) => localStorage.setItem('norway_'+k, v),
+            remove: (k) => localStorage.removeItem('norway_'+k)
         };
 
+        // === מערך הטיול המעודכן (אוסלו-ברגן-אולדן-וולדה) ===
         const trip = [
-            { id:1, date:"12/08", lat:59.91, lon:10.75, stay:"אוסלו (Rostockgata)", title:"נחיתה באוסלו", flight:"ישראייר 227", km: 50,
-              drive:"הגעה לדירה ב-Rostockgata 82 באזור ה-Barcode המודרני.",
-              main:"גג בית האופרה והספרייה הלאומית Deichman.",
-              kids:"ריצה על הגג המשופע של האופרה - חוויה בטוחה לבנות.",
-              restaurant: { name: "Mamma Pizza", desc: "איטלקית מעולה.", source: "Gmail" },
-              gear: ["דרכונים", "כרטיסי רכבת"], map: "Rostockgata 82, Oslo", cost: 460 },
-            { id:3, date:"14/08", lat:60.39, lon:5.32, stay:"ברגן", title:"הרכבת לברגן", km: 480,
-              drive:"נסיעה ב-Bergensbanen מאוסלו לברגן.", main:"נופי רמת הארדנגרווידה.", kids:"קרון משפחה.", gear:["טאבלטים", "אוכל לנסיעה"], map: "Bergen Station", cost: 1600 },
-            { id:7, date:"18/08", lat:61.83, lon:6.81, stay:"אולדן (Fremsteteigen)", title:"בקתת אולדן", km: 210,
-              drive:"צפונה לאולדן. שימו לב לקרחון Bøyabreen ביציאה ממנהרת Fjærland.", main:"התמקמות בבקתה של Ketil.", kids:"משחקים בטבע.", gear:["בגדים חמים"], map: "Fremsteteigen, Olden", cost: 300 },
-            { id:9, date:"20/08", lat:62.14, lon:6.07, stay:"וולדה (Hamnegata)", title:"דירת Sjøbuda", km: 110,
-              drive:"הגעה לוולדה לדירה של Silje על קו המים.", main:"פיורד וולדה.", kids:"צפייה בסירות מהחלון.", gear:["מצרכים לארוחת ערב"], map: "Hamnegata 8, Volda", cost: 50 }
-            // שאר הימים יתווספו כאן באותו מבנה...
+            { id:1, date:"12/08", lat:59.91, lon:10.75, stay:"אוסלו (Barcode)", title:"נחיתה באוסלו", flight:"ישראייר 227", km: 50,
+              drive:"נסיעה משדה Gardermoen למרכז העיר. הגעה לדירה ברחוב Rostockgata 82 באזור ה-Barcode המרהיב.",
+              main:"סיור ערב בנמל ה-Barcode ועלייה לגג בית האופרה.",
+              kids:"גג האופרה - הבנות יכולות לרוץ על השיש הלבן המשופע. ביקור בספריית Deichman הסמוכה.",
+              restaurant: { name: "Mamma Pizza", desc: "פיצרייה איכותית קרובה לדירה.", source: "Gmail" },
+              gear: ["דרכונים", "כרטיסי Flytoget", "מטבע מקומי"], map: "Rostockgata 82, Oslo", cost: 460 },
+            { id:2, date:"13/08", lat:59.91, lon:10.75, stay:"אוסלו", title:"תרבות ופארקים באוסלו", km: 0,
+              drive:"שימוש בתחבורה הציבורית (Ruter).",
+              main:"פארק Vigeland ומוזיאון Fram של ספינות הקוטב.",
+              kids:"במוזיאון Fram ניתן לעלות לסיפון הספינה המקורית - חוויה מרגשת לבנות.",
+              restaurant: { name: "Mathallen Oslo", desc: "שוק אוכל מקורה עם מגוון דוכנים.", source: "Visit Oslo" },
+              gear: ["נעלי הליכה", "כרטיס Ruter"], map: "Vigeland Park, Oslo", cost: 242 },
+            { id:3, date:"14/08", lat:60.39, lon:5.32, stay:"ברגן (Bergen)", title:"הרכבת לברגן (Bergensbanen)", km: 480,
+              drive:"אחת הנסיעות היפות בתבל - חוצה את רמת הארדנגרווידה בגובה 1200 מטר.",
+              main:"נסיעה נופית של כ-7 שעות. הנוף משתנה מירוק לשלג וחזרה לפיורדים.",
+              kids:"חפשו את קרון המשפחה (Familie) ברכבת - יש שם אזור משחקים קטן.",
+              gear: ["טאבלטים טעונים", "נשנושים", "כרטיסי רכבת"], map: "Bergen Station", cost: 1600 },
+            { id:4, date:"15/08", lat:60.39, lon:5.32, stay:"ברגן", title:"בריגן והר פלויין", km: 10,
+              drive:"איסוף הרכב השכור בברגן. נסיעה קצרה לנמל.",
+              main:"נמל Bryggen ההיסטורי ועלייה בפוניקולר לתצפית מהר Fløyen.",
+              kids:"יער הטרולים בפסגת ההר - מסלול קסום עם פסלים וגן שעשועים.",
+              restaurant: { name: "Bryggeloftet", desc: "מסעדה נורווגית מסורתית.", source: "Visit Bergen" },
+              gear: ["מטריה (חשוב בברגן)", "ז'קט קל"], map: "Fløibanen", cost: 440 },
+            { id:5, date:"16/08", lat:60.63, lon:6.42, stay:"ווס (Voss)", title:"הדרך לווס ותצפית Stegastein", km: 140,
+              drive:"נסיעה על E16. חובה: עלייה לתצפית Stegastein מעל Aurland - מרפסת עץ שתלויה 650 מטר מעל הפיורד.",
+              main:"תצפית Stegastein המרהיבה. שימו לב לזכוכית בקצה המרפסת.",
+              kids:"צילום משפחתי 'על הגובה' בסוף המרפסת.",
+              gear: ["מצלמה", "נעלי נהיגה"], map: "Stegastein Viewpoint", cost: 100 },
+            { id:6, date:"17/08", lat:60.86, lon:7.11, stay:"ווס (Voss)", title:"פלאם והרכבת", km: 120,
+              drive:"נסיעה מווס לפלאם דרך עמק Stalheim.",
+              main:"רכבת פלאם (Flåmsbana). אחת הרכבות היפות והתלולות בעולם.",
+              kids:"מפל Kjosfossen - היציאה מהרכבת ליד המפל העוצמתי.",
+              restaurant: { name: "Ægir BrewPub", desc: "עיצוב ויקינגי מרהיב.", source: "White Guide" },
+              gear: ["כרטיסי רכבת פלאם", "מעיל רוח"], map: "Flåm Station", cost: 1700 },
+            { id:7, date:"18/08", lat:61.83, lon:6.81, stay:"אולדן (Fremsteteigen)", title:"צפונה לארץ הקרחונים", km: 210,
+              drive:"נסיעה לאולדן. שימו לב לקרחון Bøyabreen שצץ מימין מיד ביציאה ממנהרת Fjærland.",
+              main:"התמקמות בבקתה של Ketil Finsås ב-Fremsteteigen.",
+              kids:"משחקים בטבע סביב הבקתה מול הפיורד השקט.",
+              gear: ["בגדים חמים", "מצרכים לבישול"], map: "Fremsteteigen, Olden", cost: 300 },
+            { id:8, date:"19/08", lat:61.66, lon:6.81, stay:"אולדן", title:"קרחון בריקסדל", km: 40,
+              drive:"נסיעה לאורך אגם Oldevatnet - המים בצבע טורקיז חלבי מדהים.",
+              main:"קרחון Briksdalsbreen. נסיעה ברכבי ה'טרול' (Troll Cars) עד הקרחון.",
+              kids:"נסיעה בבאגי הפתוח - חוויה כיפית מאוד לבנות.",
+              gear: ["משקפי שמש", "מעיל"], map: "Briksdalsbreen", cost: 600 },
+            { id:9, date:"20/08", lat:62.14, lon:6.07, stay:"וולדה (Hamnegata)", title:"הגעה לוולדה", km: 110,
+              drive:"נסיעה לאורך Hornindalsvatnet (האגם העמוק באירופה). הגעה לדירה Hamnegata 8.",
+              main:"התמקמות בדירה של Silje על קו המים.",
+              kids:"חיפוש ספינות נכנסות לנמל וולדה ישירות מהחלון.",
+              restaurant: { name: "Tredet", desc: "מקום מפגש מקומי נהדר.", source: "Volda Guide" },
+              gear: ["נעלי בית", "מצרכים לארוחת ערב"], map: "Hamnegata 8, Volda", cost: 50 },
+            { id:10, date:"21/08", lat:62.10, lon:7.20, stay:"וולדה", title:"גייראנגר - שיא הפיורדים", km: 160,
+              drive:"נסיעה לגייראנגר. כדאי לקחת את המעבורת התיירותית מ-Hellesylt ששטה לתוך הפיורד.",
+              main:"שייט בפיורד Geirangerfjord מול מפלי 'שבע האחיות'.",
+              kids:"ספירת המפלים מהספינה - חפשו את 'המחזר' (המפל ממול).",
+              restaurant: { name: "Brasserie Posten", desc: "מסעדה מעולה בגייראנגר.", source: "White Guide" },
+              gear: ["בגדים אטומים למים", "משקפת"], map: "Geirangerfjord", cost: 1200 },
+            { id:11, date:"22/08", lat:62.47, lon:6.15, stay:"וולדה", title:"אולסונד והאקווריום", km: 140,
+              drive:"נסיעה לעיר האר-נובו היפה. תצפית מהר Aksla על כל האיים.",
+              main:"האקווריום Atlanterhavsparken. מופע האכלה מפורסם.",
+              kids:"האכלת פינגווינים וכלבי ים - נקודת שיא לבנות.",
+              gear: ["גרביים להחלפה", "מצלמה"], map: "Atlanterhavsparken", cost: 500 },
+            { id:12, date:"23/08", lat:62.14, lon:6.07, stay:"וולדה", title:"יום ראשון רגוע", km: 0,
+              drive:"מנוחה בוולדה (שימו לב: הסופרים סגורים בימי ראשון!).",
+              main:"טיול נינוח סביב אגם Røtevatnet מעל העיירה.",
+              kids:"זמן חופשי ומשחקים בדירה.",
+              gear: ["רשימת אריזה"], map: "Volda", cost: 100 },
+            { id:13, date:"24/08", lat:62.14, lon:6.07, stay:"וולדה", title:"טבע מקומי בוולדה", km: 20,
+              drive:"סיור בסביבה הקרובה של הפיורד.",
+              main:"איסוף אוכמניות ביערות סביב וולדה.",
+              kids:"תחרות איסוף אוכמניות - למי יהיו ידיים סגולות יותר?",
+              gear: ["קופסאות לאוכמניות", "בקבוק מים"], map: "Volda", cost: 150 },
+            { id:14, date:"25/08", lat:60.39, lon:5.32, stay:"חזור", title:"חזרה לברגן וטיסה", km: 280,
+              drive:"הדרך הארוכה דרומה על כביש E39. החזרת הרכב בשדה בברגן.",
+              main:"מעבורת Lavik-Oppedal - נפרדים מהפיורד מהסיפון.",
+              kids:"סיכום הטיול וצפייה בתמונות במטוס.",
+              gear: ["דרכונים", "כרטיסי טיסה"], map: "Bergen Airport", cost: 800 }
         ];
 
-        // === פונקציות הפיצ'רים המקוריות ===
+        // --- Core Logic Functions ---
         function toggleModal(id) {
             const m = document.getElementById(id);
             m.classList.toggle('open');
@@ -165,118 +238,139 @@
         }
 
         function renderGearList() {
-            const list = document.getElementById('gear-list-full');
-            const allGear = [...new Set(trip.flatMap(d => d.gear || []))];
-            list.innerHTML = allGear.map(item => {
-                const checked = StorageHelper.get('gear-'+item) ? 'checked' : '';
-                return `<div style="margin-bottom:8px;"><input type="checkbox" ${checked} onchange="saveGear('${item}', this.checked)"> ${item}</div>`;
+            const container = document.getElementById('gear-list-container');
+            const allItems = [...new Set(trip.flatMap(d => d.gear || []))];
+            container.innerHTML = allItems.map(item => {
+                const checked = Storage.get('gear_'+item) ? 'checked' : '';
+                return `<div style="margin-bottom:10px;"><input type="checkbox" ${checked} onchange="saveGear('${item}', this.checked)"> ${item}</div>`;
             }).join('');
         }
 
         function saveGear(item, val) {
-            if(val) StorageHelper.set('gear-'+item, 'true');
-            else StorageHelper.remove('gear-'+item);
+            if(val) Storage.set('gear_'+item, 'true');
+            else Storage.remove('gear_'+item);
         }
 
-        async function fetchWeather(lat, lon, dateStr, dayId) {
-            const card = document.getElementById('weather-'+dayId);
+        async function updateWeather(lat, lon, dayId) {
+            const el = document.getElementById('weather-'+dayId);
             try {
                 const resp = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=Europe%2FOslo`);
                 const data = await resp.json();
-                card.innerHTML = `🌡️ מקסימום: ${data.daily.temperature_2m_max[0]}°C | מינימום: ${data.daily.temperature_2m_min[0]}°C`;
-            } catch(e) { card.innerHTML = "מזג אוויר: לא ניתן לטעון נתונים אופליין"; }
+                el.innerHTML = `🌤️ מקסימום: ${data.daily.temperature_2m_max[0]}°C | מינימום: ${data.daily.temperature_2m_min[0]}°C`;
+            } catch(e) { el.innerHTML = "מזג אוויר: לא זמין אופליין"; }
         }
 
         function loadDay(id) {
             const d = trip.find(x => x.id === id);
             const content = document.getElementById('content');
-            const isDone = StorageHelper.get('day-'+id) ? 'checked' : '';
-            const note = StorageHelper.get('note-'+id) || '';
+            const isDone = Storage.get('day_'+id) ? 'checked' : '';
+            const note = Storage.get('note_'+id) || '';
+            const mapUrl = `https://maps.google.com/maps?q=${encodeURIComponent(d.map)}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
 
             content.innerHTML = `
-                <div class="day-header">
-                    <h2 class="day-main-title">${d.title}</h2>
-                    <p style="color:var(--aurora-g)">${d.date} | ${d.stay}</p>
+                <div class="day-header fade-up">
+                    <h2 class="day-main-title" style="font-family:'Playfair Display';">${d.id}. ${d.title}</h2>
+                    <p style="color:var(--aurora-g); margin-bottom:15px;">${d.date} | 🏠 ${d.stay}</p>
                     <label class="check-card">
-                        <input type="checkbox" id="done-${id}" ${isDone} onchange="markDone(${id}, this.checked)">
-                        <span>סיימנו יום זה! ✅</span>
+                        <input type="checkbox" ${isDone} onchange="markDay(${id}, this.checked)">
+                        <span style="font-weight:700;">סימון יום זה כהושלם ✅</span>
                     </label>
                 </div>
 
                 <div class="cards-grid">
                     <div class="info-card">
-                        <div class="card-header">🚗 יומן דרכים (${d.km} ק״מ)</div>
+                        <div class="card-header">🚗 נסיעה (${d.km} ק״מ)</div>
                         <div class="card-text">${d.drive}</div>
                     </div>
                     <div class="info-card">
-                        <div class="card-header">🎯 אטרקציה</div>
+                        <div class="card-header">🎯 אטרקציה מרכזית</div>
                         <div class="card-text">${d.main}</div>
                     </div>
+                    <div class="info-card card-wide">
+                        <div class="card-header">✨ דגש לבנות (4 ו-8)</div>
+                        <div class="card-text">${d.kids}</div>
+                    </div>
                 </div>
+
+                ${d.restaurant ? `
+                <div class="restaurant-card">
+                    <div style="font-size:1.5em;">🍽️</div>
+                    <div>
+                        <strong style="color:var(--restaurant)">המלצת אוכל: ${d.restaurant.name}</strong>
+                        <p style="font-size:0.85em; opacity:0.8;">${d.restaurant.desc}</p>
+                    </div>
+                </div>` : ''}
 
                 <div class="weather-card" id="weather-${id}">טוען מזג אוויר...</div>
 
                 <div class="notes-section">
-                    <h4 style="margin-bottom:8px;">✏️ הערות אישיות</h4>
-                    <textarea class="notes-textarea" oninput="saveNote(${id}, this.value)">${note}</textarea>
+                    <h4 style="margin-bottom:10px; color:var(--gold);">✏️ הערות אישיות ליום זה</h4>
+                    <textarea class="notes-textarea" oninput="saveNote(${id}, this.value)" placeholder="כתבו כאן...">${note}</textarea>
                 </div>
 
-                <div class="map-card" style="height:300px; border-radius:16px; overflow:hidden;">
-                    <iframe width="100%" height="100%" frameborder="0" src="https://maps.google.com/maps?q=${encodeURIComponent(d.map)}&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
+                <div class="map-card" style="height:350px; border-radius:16px; overflow:hidden; border:1px solid var(--border);">
+                    <iframe width="100%" height="100%" frameborder="0" src="${mapUrl}"></iframe>
                 </div>
             `;
-            
-            fetchWeather(d.lat, d.lon, d.date, d.id);
+
+            updateWeather(d.lat, d.lon, d.id);
             document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('btn-'+id).classList.add('active');
             content.scrollTo(0,0);
         }
 
-        function markDone(id, val) {
-            if(val) StorageHelper.set('day-'+id, 'true');
-            else StorageHelper.remove('day-'+id);
+        function markDay(id, val) {
+            if(val) Storage.set('day_'+id, 'true');
+            else Storage.remove('day_'+id);
             document.getElementById('btn-'+id).classList.toggle('done', val);
             updateProgress();
         }
 
-        function saveNote(id, val) {
-            StorageHelper.set('note-'+id, val);
-        }
+        function saveNote(id, val) { Storage.set('note_'+id, val); }
 
         function updateProgress() {
-            const done = trip.filter(d => StorageHelper.get('day-'+d.id)).length;
+            const done = trip.filter(d => Storage.get('day_'+d.id)).length;
             const pct = Math.round((done / trip.length) * 100);
             document.getElementById('progress-bar').style.width = pct + '%';
             document.getElementById('progress-pct').textContent = pct + '%';
             if(pct === 100) triggerConfetti();
         }
 
+        function triggerConfetti() {
+            const c = document.getElementById('confetti-canvas');
+            c.style.display = 'block';
+            setTimeout(() => c.style.display = 'none', 4000);
+        }
+
         function renderSidebar() {
             const sidebar = document.getElementById('sidebar');
             trip.forEach(day => {
-                const isDone = StorageHelper.get('day-'+day.id) ? 'done' : '';
+                const done = Storage.get('day_'+day.id) ? 'done' : '';
                 const btn = document.createElement('button');
-                btn.className = `day-btn ${isDone}`;
+                btn.className = `day-btn ${done}`;
                 btn.id = 'btn-' + day.id;
                 btn.innerHTML = `<div class="day-num-badge">${day.id}</div><div class="day-info"><strong>${day.title}</strong></div>`;
-                btn.onclick = () => loadDay(day.id);
+                btn.onclick = () => {
+                    loadDay(day.id);
+                    if(window.innerWidth <= 860) btn.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+                };
                 sidebar.appendChild(btn);
             });
         }
 
-        function triggerConfetti() {
-            const c = document.getElementById('confetti-canvas');
-            c.style.display = 'block';
-            // לוגיקת קונפטי בסיסית (ניתן להרחיב לפי המקור)
-            setTimeout(() => c.style.display = 'none', 3000);
-        }
-
-        // איתחול סופי
+        // --- Initialization ---
         window.onload = () => {
             renderSidebar();
             loadDay(1);
             updateProgress();
             
+            // Theme Toggle
+            document.getElementById('theme-toggle').onclick = () => {
+                document.body.classList.toggle('light-mode');
+                Storage.set('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+            };
+            if(Storage.get('theme') === 'light') document.body.classList.add('light-mode');
+
             // Countdown
             const diff = new Date('2026-08-11') - new Date();
             document.getElementById('cd-days').textContent = Math.ceil(diff / (1000*60*60*24));
