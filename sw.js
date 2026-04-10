@@ -1,4 +1,4 @@
-const CACHE_NAME = 'norway26-cache-v18';
+const CACHE_NAME = 'norway26-cache-v19';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
